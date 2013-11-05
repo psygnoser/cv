@@ -1,0 +1,17 @@
+			<fieldset id="<?= $this->view->fieldset->id ?>">
+				<a title="Remove this fieldset!" class="remove" href="#"></a>
+				<legend>
+					<div class="bull bullw"></div>
+					<div id="<?= $this->view->fieldset->id ?>" class="edit"><?= $this->view->fieldset->name ?></div>
+				</legend>
+				<div class="fields">
+				<?php
+				$fields = isset( $this->view->fields[ $this->view->fieldset->id ] ) ? $this->view->fields[ $this->view->fieldset->id ] : array();
+				foreach ( $fields as $field ): 
+					$this->sub( 'sub/dl', array( 'field'=>$field ) );
+				endforeach; ?>
+				</div>
+				<div class="controls fields">
+					<a title="Add a new field!" class="add" href="#"></a>
+				</div>
+			</fieldset>

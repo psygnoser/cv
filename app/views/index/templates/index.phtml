@@ -1,0 +1,31 @@
+<?php $this->beginCapture('head'); ?>
+<script type="text/javascript">
+$(function(){
+	var stop = false;
+	$( "#accordion h3" ).click(function( event ) {
+		if ( stop ) {
+			event.stopImmediatePropagation();
+			event.preventDefault();
+		}
+	});
+	$( "#accordion" )
+		.accordion({
+			header: "> div > h3",
+			autoHeight: false
+		});
+	/*$( "#accordion > div > h3" ).live( 'mouseup', function(){console.log('sdfsfd');
+		$(this).parent().children('div.fieldsets').slideToggle(500);
+	});*/
+	$('.add').hide();
+});
+</script>
+<?php $this->endCapture('head'); ?>
+<div id="accordion">
+	<?php  foreach ( (array) $this->view->sections as $section ):
+		$this->sub( 'sub/accord', array( 
+			'section'=>$section, 
+			'fieldsets'=>$this->view->fieldsets, 
+			'fields'=>$this->view->fields ) );
+	
+	endforeach;  ?>
+</div>

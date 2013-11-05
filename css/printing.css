@@ -1,0 +1,38 @@
+html {
+    height: 100%;
+}
+body {
+	height: 100%;
+	font-family: Arial;
+	font-size: 12px; 
+    margin: 0;
+}
+
+h1 { margin:0px 0 0 20px; }
+h1 span{ font-family: 'Arizonia', cursive; font-size: 66.6px; }
+
+#wrapper { margin:0px; }
+
+#main { width: 792px; margin:0px auto 20px auto; background: white; }
+
+#main > div { padding: 10px; }
+ 
+#copyright { width: 792px; margin: 0px auto 0px auto; padding-bottom:30px; text-align: center; overflow:hidden; }
+
+.add { display: none; }
+
+#accordion span.edit { font-size: 14px !important;  font-weight: bold; }
+
+fieldset { width: 752px; margin:10px 0 0 20px; background: #fff; -webkit-border-radius: 5px;-moz-border-radius: 5px; border-radius: 5px;  }
+fieldset legend {overflow:auto; background:#293669;  -webkit-border-radius: 5px;-moz-border-radius: 5px; border-radius: 5px; padding:5px 10px; color:#fff }
+
+dl { overflow: hidden; width: 752px; margin:0px;  }
+dl dt { width:220px; float:left; text-align: right;  font-weight: bold; padding:10px 0px; }
+
+dl dt .legend { float:right; }
+dl dd { /*width:500px;*/ border-left:1px solid black;float:left;  padding:10px 0px 10px 20px;}
+
+#accordion { width: 772px; }
+#accordion > div { margin-bottom: 30px; }
+#accordion > div > h3 { display: none; }
+#accordion > div > span { width: 792px; padding: 10px; color:white; display: block; background:#293669;  -webkit-border-radius: 5px;-moz-border-radius: 5px; border-radius: 5px; }

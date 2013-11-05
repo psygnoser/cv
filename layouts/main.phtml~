@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<base href="<?= \CV\core\Application::PATH ?>" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>CV</title>
+		<link type="text/css" href="css/smoothness/jquery-ui-1.8.16.custom.css" rel="stylesheet" />	
+		<link type="text/css" href="css/main.css" rel="stylesheet" />	
+		<link href='http://fonts.googleapis.com/css?family=Arizonia' rel='stylesheet' type='text/css'>
+		<script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
+		<script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
+		<script type="text/javascript" src="js/jquery.jeditable.mini.js"></script>
+		<script type="text/javascript">
+			$(function(){
+				var stop = false;
+				$( "#accordion h3" ).click(function( event ) {
+					if ( stop ) {
+						event.stopImmediatePropagation();
+						event.preventDefault();
+						stop = false;
+					}
+				});
+				$( "#accordion" )
+					.accordion({
+						header: "> div > h3",
+						change: function(e, ui) { 
+							//console.log(e.currenTarget.id);
+						}
+					})
+					.sortable({
+						axis: "y",
+						handle: "a",
+						stop: function(e, ui) {
+							stop = true;
+		
+							//console.log( ui.item.index() );
+							//console.log( $(this).sortable('toArray') );
+							var items = $(this).sortable('toArray');
+							/*for ( inx in items ) {
+								//console.log( $(this).children().eq(inx).attr('id') );
+								$(this).children().eq(inx).attr('position', inx);
+							}*/
+							$.post( 
+								"index/position/type/sections", 
+								{ data: items },
+								function ( data ) {
+									console.log( data )
+								});
+						}/*,
+						update: function() {
+						  console.log( $(this).sortable() );
+						}*/
+					});
+				$('#accordion .fieldsets > div').sortable({
+						axis: "y",
+						handle: "div.bull",
+						start: function(e, ui) {
+							ui.item.css({ opacity: 0.5 });
+						},
+						stop: function(e, ui) {
+							var items = $(this).sortable('toArray');
+							$.post( 
+								"index/position/type/fieldsets", 
+								{ data: items },
+								function ( data ) {
+									console.log( data )
+								});
+							ui.item.css({ opacity: 1.0 });
+						}
+					});
+				$('#accordion .fields').sortable({
+						axis: "y",
+						handle: "div",
+						start: function(e, ui) {
+							ui.item.css({ opacity: 0.5 });
+						},
+						stop: function(e, ui) {
+							var items = $(this).sortable('toArray');
+							$.post( 
+								"index/position/type/fields", 
+								{ data: items },
+								function ( data ) {
+									console.log( data )
+								});
+							ui.item.css({ opacity: 1.0 });
+						}
+					});
+				
+				/*$('#accordion h3 div.edit').editable('index/save/type/sections/name/name', { 
+					indicator: 'Saving...',
+					tooltip: 'Click to edit...'
+				});*/
+				
+				$('#accordion .fieldsets legend div.edit').editable('index/save/type/fieldsets/name/name', { 
+					indicator: 'Saving...',
+					tooltip: 'Click to edit...'
+				});
+				
+				$('#accordion .fields div.edit').editable('index/save/type/fields/name/name', {
+					indicator: 'Saving...',
+					tooltip: 'Click to edit...'
+				});
+				$('#accordion .fields dd.edit').editable('index/save/type/fields/name/data', { 
+					type: 'textarea',
+					cancel: 'Cancel',
+					submit: 'OK',
+					indicator: 'Saving...',
+					tooltip: 'Click to edit...'
+				});
+				
+				$('.controls.fields .add').click(function(event){
+					//console.log('boo');
+					event.stopImmediatePropagation();
+					event.preventDefault();
+					
+					//console.log($(this).parent().prev().parent().attr('id'));
+					//$(this).parent().prev().children().first().clone().appendTo( $(this).parent().prev() );
+			
+					var fieldset_id = $(this).parent().prev().parent().attr('id');
+					var position = $(this).parent().prev().children().length; //console.log(position);
+					var t = $(this);
+					
+					$.post( 
+						'index/create/type/fields', 
+						{ 'parent_id': fieldset_id, 'position': position },
+						function ( data ) {	
+						data = $.parseJSON(data);
+						
+						$.post( 'index/sub/tpl/dl', function ( node ) {
+								
+							node = $(node);
+							node.attr('id', data.fid );
+							node.children().eq(0).children().eq(1).attr('id', data.fid);
+							node.children().eq(0).children().eq(1).text('...');
+							node.children().eq(1).attr('id', data.fid);
+							node.children().eq(1).text('...');
+							t.parent().prev().append(node);
+
+							$('#accordion .fields div.edit[id='+ data.fid+ ']').editable('index/save/type/fields/name/name', {
+								indicator: 'Saving...',
+								tooltip: 'Click to edit...'
+							});
+							//console.log('#accordion .fields div.edit[id='+ data.id+ ']')
+							$('#accordion .fields dd.edit[id='+ data.fid+ ']').editable('index/save/type/fields/name/data', { 
+								type: 'textarea',
+								cancel: 'Cancel',
+								submit: 'OK',
+								indicator: 'Saving...',
+								tooltip: 'Click to edit...'
+							});
+						});
+					});
+				});
+				
+				$('.controls.fieldsets .add').click(function(event){
+					event.stopImmediatePropagation();
+					event.preventDefault();
+			
+					var section_id = $(this).parent().parent().parent().attr('id');
+					var position = $(this).parent().prev().children().length; console.log([section_id,position]);
+					var t = $(this);
+					//return;
+					$.post( 
+						'index/create/type/fieldsets', 
+						{ 'parent_id': section_id, 'position': position },
+						function ( data ) {
+						data = $.parseJSON(data);
+
+						$.post( 'index/sub/tpl/fieldset', function ( node ) {
+								
+							node = $(node);
+							node.attr('id', data.fid );
+							node.children().eq(0).children().eq(1).attr('id', data.fid);
+							node.children().eq(0).children().eq(1).text('...');
+							t.parent().prev().append(node);
+
+							$('#accordion .fieldsets legend div.edit[id='+ data.fid+ ']').editable('index/save/type/fieldsets/name/name', { 
+								indicator: 'Saving...',
+								tooltip: 'Click to edit...'
+							});
+						});
+					});
+				});
+				
+				$('dl').live('mouseover', function(event){ //console.log($(this));
+						$(this).children().eq(0).children().eq(0).show();
+					})
+					.live('mouseout', function(event){
+						$(this).children().eq(0).children().eq(0).hide();
+					});
+				$('legend').live('mouseover', function(event){ //console.log($(this));
+						$(this).children().eq(0).css('visibility','visible');
+					})
+					.live('mouseout', function(event){
+						$(this).children().eq(0).css('visibility','hidden');
+					});
+			});
+		</script>
+		<?= $this->layout->script ?>
+	<body>
+		<div id="wrapper">
+			<div id="main">
+				<div id="header"><h1><span>CV</span></h1></div>
+				<!--div id="menu">šđčćžŠĐČĆŽ</div-->
+				<div id="content">
+					<div>
+					<?= $this->getContent() ?>
+					</div>
+				</div>
+			</div>
+			<div id="copyright">Copyright &copy; <?= date('Y') ?> Tilen Leban. All rights reserved.</div>
+		</div>
+	</body>
+</html>

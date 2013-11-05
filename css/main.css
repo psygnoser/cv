@@ -1,0 +1,103 @@
+html {
+    height: 100%;
+}
+body {
+	height: 100%;
+	font-family: Arial;
+	font-size: 12px; 
+    margin: 0;
+    background-repeat: no-repeat;
+    background-attachment: fixed;	
+	background: #293669/*#3B4B66*/;
+}
+
+h1 { margin:20px 0 0 20px; }
+h1 span{ font-family: 'Arizonia', cursive; font-size: 66.6px; color:#fff}
+
+#wrapper { margin:0px;padding-top:80px; }
+
+#main { 
+	overflow:hidden;
+	width:900px; margin:0px auto 20px auto; background: white; 
+	-webkit-border-radius: 10px;-moz-border-radius: 10px; border-radius: 10px; 
+	-moz-box-shadow:0px 0px 20px #000000;
+	-webkit-box-shadow:0px 0px 20px #000000;
+	box-shadow:0px 0px 20px #000000;
+	
+	background: rgb(99,123,165); /* Old browsers */
+	/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzYzN2JhNSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwYzFhMmQiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+	background: -moz-linear-gradient(top, rgba(99,123,165,1) 0%, rgba(12,26,45,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(99,123,165,1)), color-stop(100%,rgba(12,26,45,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, rgba(99,123,165,1) 0%,rgba(12,26,45,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, rgba(99,123,165,1) 0%,rgba(12,26,45,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, rgba(99,123,165,1) 0%,rgba(12,26,45,1) 100%); /* IE10+ */
+	background: linear-gradient(top, rgba(99,123,165,1) 0%,rgba(12,26,45,1) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#637ba5', endColorstr='#0c1a2d',GradientType=0 ); /* IE6-8 */
+}
+#main > div { padding: 10px; }
+ 
+#copyright { width:900px; margin: 0px auto 0px auto; padding-bottom:30px; color:white; text-align: center; overflow:hidden; }
+
+.ui-accordion-header a { font-size: 14px !important;  font-weight: bold; }
+
+/*#accordion > div { overflow: hidden; background: #fff; margin-bottom: 20px; -webkit-border-radius: 5px;-moz-border-radius: 5px; border-radius: 5px; }
+#accordion > div > span {  line-height: 22px; font-size: 16px; color:#000; }
+#accordion > div > div { padding:10px 0 0 32px; }
+#accordion > div h3 { background: url(smoothness/images/ui-bg_highlight-soft_75_cccccc_1x100.png); margin:0; padding: 10px; }
+#accordion > div h3 a { text-decoration: none; margin: 10px 0 0 5px; color:#000; }
+*/
+div.fs { padding-bottom: 20px; }
+
+fieldset { overflow:hidden; width: 792px; margin-top:10px; background: #f3f3f3; -webkit-border-radius: 5px;-moz-border-radius: 5px; border-radius: 5px;  }
+fieldset legend {overflow:auto; background:#283346; -webkit-border-radius: 5px;-moz-border-radius: 5px; border-radius: 5px; padding:5px; color:#fff }
+
+dl { overflow: hidden; width: 790px; margin:0px;  }
+dl:hover { background: #e4e4e4; }
+dl dt { width:220px; float:left; text-align: right;  font-weight: bold; padding:10px 0px; }
+
+dl dt .legend { float:right; }
+dl dd { width:500px; border-left:1px solid black;float:left;  padding:10px 0px 10px 20px;}
+
+.bull { display:none; cursor: pointer; float:left; width: 16px; height:16px; text-align:center; margin:0px 10px; background: url('../images/updown_16s.png'); }
+.bullw { display:block; visibility: hidden; background: url('../images/updown_16si.png'); }
+
+legend .bull { margin-left:5px; }
+legend div.edit { float:right; margin-right: 10px; }
+
+.fields textarea { height:100px !important; }
+
+#accordion span.edit { position: absolute; z-index: 3; margin:8px 0px 0px 30px; font-weight: bold; }
+
+h3 .bull { margin: 10px 10px 0 30px; }
+h3 a.edit { /*float:left; display: block; background: blue;*/ }
+
+.controls { overflow: hidden; padding: 10px; float:right}
+.controls .add { float:left; display:block; width: 16px; height: 16px; background: url(../images/sq_plus.png); }
+dl .remove { display:none; position: absolute; margin:10px 0 0 766px; width: 16px; height: 16px; background: url(../images/remove_16.png); }
+fieldset > .remove {position: absolute; display: none; margin:-25px 0 0 791px; width: 16px; height: 16px; background: url(../images/remove_16.png); }
+
+#top { width: 960px; margin: 0px auto 0px auto;  overflow: auto; }
+#top > div { 
+	width: 960px; height: auto; position: fixed; background: #000; color: #fff; z-index: 666; 
+	-moz-box-shadow:0px 0px 10px #000000;-webkit-box-shadow:0px 0px 10px #000000;box-shadow:0px 0px 10px #000000; 
+	-webkit-border-bottom-left-radius: 10px;-moz-border-bottom-left-radius: 10px; border-bottom-left-radius: 10px; 
+	-webkit-border-bottom-right-radius: 10px;-moz-border-bottom-right-radius: 10px; border-bottom-right-radius: 10px; 
+}
+#top > div > div { padding:15px 10px 0px; overflow: hidden; }
+#top > div > div a { text-decoration: none; color: #fff; /*padding: 20px 5px 0; display: block; float:left;*/ padding: 0 5px; }
+
+#top form#login { margin:0px; padding: 0px 0 2px; }
+#top form#login input { width:150px; height:19px; float:left; margin-right: 5px; border:0px solid white; background: #f1f1f1; }
+#top form#login button { border:0px solid white;  background: #283346; overflow: hidden; padding:2px 0px;}
+#top form#login button span {color:#fff;padding:0px 5px; font-size: 11px; }
+#top form#login div#pasw { position: absolute; color: #000; margin: 3px 0 0 158px; }
+
+#top #login-error { background:black; overflow: auto; position: absolute; width:305px;
+	-moz-box-shadow:0px 0px 7px #000000;-webkit-box-shadow:0px 0px 7px #000000;box-shadow:0px 0px 7px #000000; 
+	-webkit-border-bottom-left-radius: 7px;-moz-border-bottom-left-radius: 7px; border-bottom-left-radius: 7px; 
+	-webkit-border-bottom-right-radius: 7px;-moz-border-bottom-right-radius: 7px; border-bottom-right-radius: 7px; 
+}
+
+.denied { -webkit-border-radius: 10px;-moz-border-radius: 10px; border-radius: 10px; border: 1px solid red; background: #fff; color:red; text-align: center; font-size: 16px; padding:10px; }
+
