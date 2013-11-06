@@ -13,8 +13,7 @@ class MyApplication extends core\Application
 		//http://localhost/cv/index/public/45353453/foo
 		//core\Router::set( 'public', ':controller/public/:id/:action', [ /*'controller'=>'index', 'action'=>'foo'*/ ) );	
 		//core\Router::set( 'public', 'public/:id', [ 'controller'=>'index', 'action'=>'public' ) );
-		
-        core\Router::set( 'public', 'public/:id', [ 'controller'=>'show', 'action'=>'show' ] );
+                core\Router::set( 'public', 'public/:id', [ 'controller'=>'show', 'action'=>'show' ] );
 	}
 	
 	protected function _session()
@@ -36,12 +35,11 @@ class MyApplication extends core\Application
 	protected function postInit()
 	{
 		$loggedIn = $this->getHelper('login')->isLogged();
-		//var_dump($loggedIn,$this->controller);
-		if ( !$loggedIn && $this->controller == 'index' && $this->action == 'index' ) { //die('sfs');
+		if ( !$loggedIn && $this->controller == 'index' && $this->action == 'index' ) { 
 			$this->controller = 'index';
 			$this->action = 'intro';
 			
-		} else if ( !$loggedIn && !in_array( $this->controller, [ 'login', 'show' ] ) ) { //die('sfs'); //'index','edit','printing'
+		} else if ( !$loggedIn && !in_array( $this->controller, [ 'login', 'show' ] ) ) { 
 			$this->controller = 'index';
 			$this->action = 'denied';
 		}

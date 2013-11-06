@@ -11,7 +11,6 @@ class Controller
 	private $_views;
 	private $viewOverride;
 	private $actionOverride;
-	//private $layoutOverride = '';
 	protected $subView = [];
 	protected $layout;
 	protected $get;
@@ -31,9 +30,9 @@ class Controller
 	}
 	
 	protected function _setView()
-	{ // var_dump($this->app->params()->sys->controller,$this->app->params()->sys->action);//var_dump($this->viewOverride);
+	{
 		$this->controller = $this->viewOverride ? $this->viewOverride : $this->app->controller();
-		$this->action = $this->app->action(); //$this->actionOverride ? $this->actionOverride : 
+		$this->action = $this->app->action(); 
 		$vievName = '\CV\app\views\\'. $this->controller. '\\'. $this->controller;
 		if (class_exists($vievName) )
 			$view = new $vievName;
@@ -41,14 +40,13 @@ class Controller
 			throw new \Exception(__FILE__. ", ". __LINE__. ": View '$vievName' does not exist");
 		if ( !isset( $this->_views[ $this->controller ] ) )
 			$this->_views[ $this->controller ] = $view;
-		if ( is_callable( [ $view, $this->action. 'Action' ] ) ) { // !$this->actionOverride && 
+		if ( is_callable( [ $view, $this->action. 'Action' ] ) ) {
 			//if ( !$this->actionOverride )
 			$view->{$this->action. 'Action'}();
 			$view->set();
 			$this->layout =& $view->layout();
 		}
 		$this->built = true;
-		//var_dump($controller,$action);
 	}
 	
 	public function setAction( $action )
@@ -60,7 +58,7 @@ class Controller
 	}
 	
 	public function setView( $controller )
-	{//var_dump($this->built);
+	{
 		$this->viewOverride = $controller;
 		if ( $this->built )
 			$this->_setView();

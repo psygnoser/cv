@@ -29,7 +29,6 @@ class Router
 		$this->params->{'sys'} = new Obj;
 		$this->params->sys->{'controller'} = $this->controller;
 		$this->params->sys->{'action'} =  $this->action;
-		//var_dump($this->paramsIndex,$this->controller, $this->action, $this->params);
 	}
 	
 	protected function defaultRoute()

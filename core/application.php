@@ -21,7 +21,7 @@ abstract class Application
 	protected $router;
 	
 	function __construct()
-	{ // die('sdf');
+	{
 		date_default_timezone_set(\CV\TIME_ZONE);
 		$this->preInit();
 		self::$app = $this;
@@ -36,7 +36,7 @@ abstract class Application
 	
 	protected function navigator()
 	{
-		$cn = '\CV\app\controllers\\'. $this->controller;//		var_dump($cn);
+		$cn = '\CV\app\controllers\\'. $this->controller;
 		if ( !class_exists( $cn ))
 			throw new \Exception('Invalid controller');
 		$this->controllerObj = new $cn; //var_dump($action);
@@ -130,7 +130,7 @@ abstract class Application
 	public function render()
 	{
 		$this->preRender();
-		try {	//		var_dump($this->controller, $this->action );
+		try {
 			ob_start(); 
 			$this->navigator();
 			$this->controllerObj->render();

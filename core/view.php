@@ -74,11 +74,9 @@ class View
 			$view = $this->app->getController()->getView() ? $this->app->getController()->getView() : $this->app->controller();
 		if ( !$action )
 			$action = $this->app->getController()->getView() ? $this->app->getController()->getView() : $this->app->action();
-		$path = \CV\core\Application::getPath(). 'app/views/'. $view. '/templates/'. $action. '.phtml';//	var_dump($path);
+		$path = \CV\core\Application::getPath(). 'app/views/'. $view. '/templates/'. $action. '.phtml';
 		if ( \file_exists( $path ) ) 
 			require $path;
-		//else
-		//	throw new \Exception( __FILE__. ' - '. __CLASS__. '::'. __METHOD__. ', '. __LINE__. ': '. $path );
 	}
 }
 
@@ -95,8 +93,6 @@ class ViewSub
 		$fullPath = \CV\core\Application::getPath(). 'app/views/'. $view. '/templates/'. strtolower( $path ). '.phtml';
 		if ( \file_exists( $fullPath ) )	
 			$this->_setSub( $fullPath );
-		//else
-		//	throw new \Exception( __FILE__. ' - '. __CLASS__. '::'. __METHOD__. ', '. __LINE__. ': '. $fullPath );
 	}
 	
 	public function sub( $path, array $params )
