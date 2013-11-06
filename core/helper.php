@@ -21,7 +21,7 @@ class Helper
 			$view = new $vievName;
 		else
 			throw new \Exception("View '$vievName' does not exist");
-		if ( is_callable( array( $view, $action. 'Action' ) ) ) { 
+		if ( is_callable( [ $view, $action. 'Action' ] ) ) { 
 			$view->{$action. 'Action'}();
 			$view->set( $controller, $action );
 		}

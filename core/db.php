@@ -36,8 +36,8 @@ class DB
 	public function fetch( $query, $params = null )
 	{
 		$result = $this->query( $query, $params );
-		$row = array();
-		$assoc = array();
+		$row = [];
+		$assoc = [];
 		while ( $row = $result->fetch_assoc() ) {
 			$assoc[] = (object) $row;
 		}

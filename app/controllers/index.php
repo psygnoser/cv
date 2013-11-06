@@ -43,7 +43,7 @@ class Index extends \CV\core\Controller
 			->create( $_POST['parent_id'], $_POST['position'] );
 
 		$this->view()->setHeader( \CV\core\ViewHeader::JSON );
-		print json_encode(array('fid'=>$id));
+		print json_encode(['fid'=>$id]);
 		
 		$this->disableView();
 		$this->disableLayout();
@@ -55,9 +55,9 @@ class Index extends \CV\core\Controller
 			->remove( $_POST['id'] );
 		
 		if ( !$deleted )
-			$json = array( 'error'=>1, 'msg'=>'INTERNAL ERROR: The node was not deleted.');
+			$json = [ 'error'=>1, 'msg'=>'INTERNAL ERROR: The node was not deleted.' ];
 		else
-			$json = array( 'error'=>0 );
+			$json = [ 'error'=>0 ];
 	
 		$this->view()->setHeader( \CV\core\ViewHeader::JSON );
 		print json_encode($json);

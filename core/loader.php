@@ -2,7 +2,7 @@
 
 namespace CV\core;
 
-spl_autoload_register( array( 'CV\core\Loader', 'load' ) );
+spl_autoload_register( [ 'CV\core\Loader', 'load' ] );
 
 abstract class Loader
 {

@@ -29,13 +29,13 @@ class Login extends \CV\core\Controller
 		$data = $this->model('Users')
 			->getUser( $_POST['user'], $_POST['pasw'] );
 		if ( !$data ) {
-			print $this->view()->json( array( 
+			print $this->view()->json( [ 
 				'error'=>1, 
-				'message'=>(object) array( 'username'=>array( 'Napačno uporabniško ime in/ali geslo' ) ) ) );
+				'message'=>(object) [ 'username'=>[ 'Napačno uporabniško ime in/ali geslo' ] ] ] );
 			exit;
 		}
 		//var_dump($data);exit;
-		//print $this->view()->json( array( 'error'=>0, 'redirect'=>\CV\PATH. $_POST['referer'] ) );
+		//print $this->view()->json( [ 'error'=>0, 'redirect'=>\CV\PATH. $_POST['referer'] ) );
 		//die('sdfsf');
 		session_regenerate_id( true );
 		$u = new Obj;//& Reg::set( 'u', new Obj ); 
@@ -49,7 +49,7 @@ class Login extends \CV\core\Controller
 		if ( isset( $_POST['remember'] ) )
 			setcookie( 'the_remember', true, ( time() + 3600 * 24 * 365 ) , '/' );
 		//print json_encode( $_REQUEST );
-		print $this->view()->json( array( 'error'=>0, 'redirect'=>$_POST['referer'] ) );
+		print $this->view()->json( [ 'error'=>0, 'redirect'=>$_POST['referer'] ] );
 		
 		$this->disableView();
 		$this->disableLayout();
@@ -69,12 +69,12 @@ class Login extends \CV\core\Controller
 		//var_dump($validator->getErrors());exit;
 		$errors = $validator->getErrors();
 		$response = empty( $errors ) ? 
-			array( 'error'=>0 ) :
-			array( 'message'=>(object) $errors );
+			[ 'error'=>0 ] :
+			[ 'message'=>(object) $errors ];
 		print $this->view()->json( $response );
-		/*print $this->view()->json( array( 
+		/*print $this->view()->json( [ 
 			'error'=> isset( $data[0] ) ? 0 : 1, 
-			'message'=>(object) array( 'user'=>array('Napačno uporabniško ime in/ali geslo!') ) ) );*/
+			'message'=>(object) [ 'user'=>['Napačno uporabniško ime in/ali geslo!') ) ) );*/
 		
 		$this->disableView();
 		$this->disableLayout();

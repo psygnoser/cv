@@ -11,10 +11,10 @@ class MyApplication extends core\Application
 	protected function _routers()
 	{
 		//http://localhost/cv/index/public/45353453/foo
-		//core\Router::set( 'public', ':controller/public/:id/:action', array( /*'controller'=>'index', 'action'=>'foo'*/ ) );	
-		//core\Router::set( 'public', 'public/:id', array( 'controller'=>'index', 'action'=>'public' ) );
+		//core\Router::set( 'public', ':controller/public/:id/:action', [ /*'controller'=>'index', 'action'=>'foo'*/ ) );	
+		//core\Router::set( 'public', 'public/:id', [ 'controller'=>'index', 'action'=>'public' ) );
 		
-		core\Router::set( 'public', 'public/:id', array( 'controller'=>'show', 'action'=>'show' ) );
+        core\Router::set( 'public', 'public/:id', [ 'controller'=>'show', 'action'=>'show' ] );
 	}
 	
 	protected function _session()
@@ -41,7 +41,7 @@ class MyApplication extends core\Application
 			$this->controller = 'index';
 			$this->action = 'intro';
 			
-		} else if ( !$loggedIn && !in_array( $this->controller, array( 'login', 'show' ) ) ) { //die('sfs'); //'index','edit','printing'
+		} else if ( !$loggedIn && !in_array( $this->controller, [ 'login', 'show' ] ) ) { //die('sfs'); //'index','edit','printing'
 			$this->controller = 'index';
 			$this->action = 'denied';
 		}

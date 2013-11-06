@@ -12,7 +12,7 @@ class Controller
 	private $viewOverride;
 	private $actionOverride;
 	//private $layoutOverride = '';
-	protected $subView = array();
+	protected $subView = [];
 	protected $layout;
 	protected $get;
 	protected $built = false;
@@ -41,7 +41,7 @@ class Controller
 			throw new \Exception(__FILE__. ", ". __LINE__. ": View '$vievName' does not exist");
 		if ( !isset( $this->_views[ $this->controller ] ) )
 			$this->_views[ $this->controller ] = $view;
-		if ( is_callable( array( $view, $this->action. 'Action' ) ) ) { // !$this->actionOverride && 
+		if ( is_callable( [ $view, $this->action. 'Action' ] ) ) { // !$this->actionOverride && 
 			//if ( !$this->actionOverride )
 			$view->{$this->action. 'Action'}();
 			$view->set();

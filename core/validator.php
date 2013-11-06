@@ -6,7 +6,7 @@ class Validator
 {
 	private $stack = null;
 	private $validators = null;
-	private $msg = array();
+	private $msg = [];
 	
 	const POST = '_POST';
 	const GET = '_GET';
@@ -62,7 +62,7 @@ class Validator
 					continue;
 			}
 			$params->error = true;
-			$this->msg[$name] = array( $params->errorMsg );	
+			$this->msg[$name] = [ $params->errorMsg ];	
 		}
 	}
 	

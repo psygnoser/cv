@@ -8,7 +8,7 @@
 				<?php
 				$fields = isset( $this->view->fields[ $this->view->fieldset->id ] ) ? $this->view->fields[ $this->view->fieldset->id ] : array();
 				foreach ( $fields as $field ): 
-					$this->sub( 'sub/dl', array( 'field'=>$field ) );
+					$this->sub( 'sub/dl', [ 'field'=>$field ] );
 				endforeach; ?>
 				</div>
 				<div class="controls fields">

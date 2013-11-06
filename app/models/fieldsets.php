@@ -9,10 +9,10 @@ class Fieldsets extends \CV\core\model
 	public function getAll()
 	{
 		$data = $this->select( 'ORDER BY section_id ASC, position ASC' );
-		$remapped = array();
+		$remapped = [];
 		foreach ( $data as $node ) {
 			if ( !isset( $remapped[ $node->section_id ] ) )
-				$remapped[ $node->section_id ] = array();
+				$remapped[ $node->section_id ] = [];
 			$remapped[ $node->section_id ][] = $node;
 		}
 		return $remapped;

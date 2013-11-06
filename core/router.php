@@ -5,7 +5,7 @@ use \CV\core\Data_Object as Obj;
 
 class Router
 {
-	protected static $routes = array();
+	protected static $routes = [];
 	protected $uri;
 	protected $paramsRaw;
 	protected $paramsIndex;
@@ -79,7 +79,7 @@ class Router
 			$search = \str_replace( ':'. $key, $value, $search );
 		}
 		$search = \preg_replace('/:([a-z0-9_-]*)/', '([a-z0-9_-]*)', $search );
-		self::$routes[$name] = array( 'pattern'=>$pattern, 'search'=>$search, 'params'=>$params );
+		self::$routes[$name] = [ 'pattern'=>$pattern, 'search'=>$search, 'params'=>$params ];
 	}
 }
 

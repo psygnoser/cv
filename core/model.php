@@ -13,7 +13,7 @@ class Model
 	private static $db;
 	protected $table;
 	protected $primary;
-	protected $secondary = array();
+	protected $secondary = [];
 	private static $models;
 	
 	function __construct()
@@ -96,7 +96,7 @@ class ModelInsert
 	
 	function __construct( \CV\core\Model $model )
 	{
-		$this->stack = array();
+		$this->stack = [];
 		$this->db =& $model->db();
 		$this->model =& $model;
 		$this->db->start();
@@ -105,7 +105,7 @@ class ModelInsert
 	public function __set( $key, $value )
 	{
 		if ( !isset( $this->stack[$key] ) )
-			$this->stack[$key] = array();
+			$this->stack[$key] = [];
 		$this->stack[$key][] = $value;
 	}
 	
@@ -140,7 +140,7 @@ class ModelUpdate
 	
 	function __construct( \CV\core\Model $model )
 	{
-		$this->stack = array();
+		$this->stack = [];
 		$this->db =& $model->db();
 		$this->model =& $model;
 		$this->db->start();
@@ -149,7 +149,7 @@ class ModelUpdate
 	public function __set( $key, $value )
 	{
 		if ( !isset( $this->stack[$key] ) )
-			$this->stack[$key] = array();
+			$this->stack[$key] = [];
 		$this->stack[$key][] = $value;
 	}
 	

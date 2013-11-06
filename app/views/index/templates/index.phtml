@@ -22,10 +22,10 @@ $(function(){
 <?php $this->endCapture('head'); ?>
 <div id="accordion">
 	<?php  foreach ( (array) $this->view->sections as $section ):
-		$this->sub( 'sub/accord', array( 
+		$this->sub( 'sub/accord', [ 
 			'section'=>$section, 
 			'fieldsets'=>$this->view->fieldsets, 
-			'fields'=>$this->view->fields ) );
+			'fields'=>$this->view->fields ] );
 	
 	endforeach;  ?>
 </div>

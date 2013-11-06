@@ -25,7 +25,7 @@ abstract class Application
 		date_default_timezone_set(\CV\TIME_ZONE);
 		$this->preInit();
 		self::$app = $this;
-		self::$path = str_replace( array('\\', '/core'), '/', dirname( __FILE__ ) ). '/';
+		self::$path = str_replace( [ '\\', '/core' ], '/', dirname( __FILE__ ) ). '/';
 		$this->layout = new Layout;
 		$this->router = new Router();
 		$this->controller = $this->router->get('controller');
