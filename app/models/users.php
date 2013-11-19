@@ -8,13 +8,12 @@ class Users extends \CV\core\model
 
 	public function getUser( $user, $pasw )
 	{
-		$dataSalt = $this->select( "WHERE email = '$user'" );
+        $dataSalt = $this->select()->WhereEmail($user)->fetch();
 		if ( !isset( $dataSalt[0] ) )
 			return false; 
-		$salt = $dataSalt[0]->salt; //var_dump($salt);exit;
+		$salt = $dataSalt[0]->salt; 
 		$pasw = \CV\core\Auth::getHash( $pasw. $salt );
-		$data = $this->select( "WHERE email = '$user' AND pasw = '$pasw'" );
-		//var_dump('result',$data);exit;
+        $data = $this->select()->WhereEmail($user)->AndPasw($pasw)->fetch();
 		return isset( $data[0] ) ? $data[0] : false;
 	}
 	
@@ -52,6 +51,15 @@ class Users extends \CV\core\model
 	{
 		return $this->delete( $id );
 	}
+    
+    /*public function sel($user) {
+        $dataSalt = $this->sel1()
+            ->LeftJoin('Sections', 'user_id', 'id')
+            ->WhereEmail($user)
+            ->AndId('1')
+            ->fetch();
+        var_dump($dataSalt);
+    }*/
 }
 
 ?>

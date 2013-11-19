@@ -15,26 +15,30 @@ class Sections extends \CV\core\model
 	public function getAll()
 	{
 		$uid = $_SESSION['u']->id;
-		$data = $this->select( "WHERE user_id = '$uid' ORDER BY position ASC" );
+        $data = $this->select()
+                ->WhereUser_id($uid)
+                ->OrderByPositionAsc()
+                ->fetch();
 		return $data;
 	}
 	
-	/*public function getByUserId( $id )
-	{
-		$id = (int)$id;
-		$data = $this->select( "WHERE user_id = '$id' ORDER BY position ASC" );
-		return $data;
-	}*/
-	
 	public function getByHash( $hash )
 	{
-		$data = $this->select( "LEFT JOIN users u ON u.id = user_id WHERE hash = '". mysql_real_escape_string($hash). "' ORDER BY position ASC" );
+        $data = $this->select()
+                ->LeftJoin('users')
+                ->WhereHash($hash, 'users')
+                ->OrderByPositionAsc()
+                ->fetch();
 		return $data;
 	}
 	
 	public function validHash( $hash )
 	{
-		$data = $this->select( "LEFT JOIN users u ON u.id = user_id WHERE hash = '". mysql_real_escape_string($hash). "' LIMIT 1" );
+        $data = $this->select()
+                ->LeftJoin('users')
+                ->WhereHash($hash, 'users')
+                ->Limit('1')
+                ->fetch();
 		return isset($data[0]);
 	}
 	

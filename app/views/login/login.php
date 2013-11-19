@@ -6,7 +6,7 @@ class Login extends \CV\core\View
 {
 	public function indexAction()
 	{
-		die('index');
+		//die('index');
 	}
 	
 	public function helperAction()

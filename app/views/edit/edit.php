@@ -7,13 +7,13 @@ class Edit extends \CV\app\views\index\Index
 	public function indexAction()
 	{
 		//parent::indexAction();
-		die('sdf');
+		//die('sdf');
 	}
 	
 	public function publicAction()
 	{
 		//parent::indexAction();
-		die('edit::public');
+		//die('edit::public');
 	}
 }
 

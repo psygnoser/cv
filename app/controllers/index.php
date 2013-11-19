@@ -4,7 +4,8 @@ namespace CV\app\controllers;
 
 class Index extends \CV\core\Controller
 {
-	public function preDispatch() {
+	public function preDispatch() 
+    {
 		/*$loggedIn = $this->app->getHelper('login')->isLogged();
 		var_dump($loggedIn,$this->controller);
 		if ( !$loggedIn && $this->action != 'index' )
@@ -83,14 +84,14 @@ class Index extends \CV\core\Controller
 		$this->disableLayout();
 	}
 	
-	public function headersAction()
+	/*public function headersAction()
 	{
 		$this->view()->setHeader( \CV\core\ViewHeader::JSON );
 		print "{neki:[0,1,2],boo:'gggg'}";
-		/*print '<?xml version="1.0" encoding="UTF-8"?><base><neki>boo</neki></base>';*/
+		//print '<?xml version="1.0" encoding="UTF-8"?><base><neki>boo</neki></base>';
 		$this->disableView();
 		$this->disableLayout();
-	}
+	}*/
 	
 	/*public function publicAction()
 	{//die('sf');

@@ -8,7 +8,10 @@ class Fieldsets extends \CV\core\model
 
 	public function getAll()
 	{
-		$data = $this->select( 'ORDER BY section_id ASC, position ASC' );
+        $data = $this->select()
+                ->OrderBySection_idAsc()
+                ->OrderByPositionAsc()
+                ->fetch();
 		$remapped = [];
 		foreach ( $data as $node ) {
 			if ( !isset( $remapped[ $node->section_id ] ) )
@@ -20,7 +23,11 @@ class Fieldsets extends \CV\core\model
 	
 	public function getBySectionId( $sectionId )
 	{
-		$data = $this->select( 'WHERE section_id = '. (int)$sectionId. 'ORDER BY section_id ASC, position ASC' );
+        $data = $this->select()
+                ->WhereSection_id( (int)$sectionId )
+                ->OrderBySection_idAsc()
+                ->OrderByPositionAsc()
+                ->fetch();
 		return $data;
 	}
 	

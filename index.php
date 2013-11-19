@@ -10,10 +10,7 @@ class MyApplication extends core\Application
 {
 	protected function _routers()
 	{
-		//http://localhost/cv/index/public/45353453/foo
-		//core\Router::set( 'public', ':controller/public/:id/:action', [ /*'controller'=>'index', 'action'=>'foo'*/ ) );	
-		//core\Router::set( 'public', 'public/:id', [ 'controller'=>'index', 'action'=>'public' ) );
-                core\Router::set( 'public', 'public/:id', [ 'controller'=>'show', 'action'=>'show' ] );
+        core\Router::set( 'public', 'public/:id', [ 'controller'=>'show', 'action'=>'show' ] );
 	}
 	
 	protected function _session()

@@ -6,7 +6,12 @@ class Users extends \CV\core\Controller
 {
 	public function indexAction()
 	{
-		print 'helllo';
+		/*//print 'helllo';
+        $users = $this->model('Users')->sel('aaa@bbb.com');
+        var_dump($users);
+        
+        $this->disableView();
+        $this->disableLayout();*/
 	}
 }
 

@@ -46,9 +46,14 @@ class Model
 		return $this->table;
 	}
 	
-	protected function select( $additional = '' )
+	/*protected function select( $additional = '' )
 	{
 		return self::$db->fetch( "SELECT * FROM $this->table ". $additional );
+	}*/
+    
+    protected function select( $additional = '' )
+	{
+		return new ModelSelect( $this, $additional );
 	}
 	
 	protected function update()
@@ -86,6 +91,67 @@ class Model
 class ModelAttributes
 {
 	
+}
+
+class ModelSelect {
+
+    private $add;
+    private $query = '';
+    
+    protected $db;
+	protected $stack;
+	protected $model;
+    private $j = 0;
+    private $ns = [];
+    private $func = [];
+     
+	function __construct( \CV\core\Model $model, $add )
+	{
+		$this->stack = [];
+		$this->db =& $model->db();
+		$this->model =& $model;
+		$this->db->start();
+        $this->add = $add;
+    }
+    
+    function __call($p,$attr) 
+    {   
+        $special = ['Join', 'Asc', 'Desc', 'Limit'];
+        preg_match_all('/[A-Z]/', $p, $matches, PREG_OFFSET_CAPTURE);
+        $query = '';
+        $func = '';
+        for ($i = 0, $c = sizeof($matches[0]); $i < $c; $i++) {
+            $begin = $matches[0][$i][1];
+            $end = !empty($matches[0][$i+1][1]) ? $matches[0][$i+1][1] - $begin : strlen($p) - $begin;
+            $match = substr($p, $begin, $end );    
+            $pfx = isset($attr[1]) && isset( $this->ns[ $attr[1] ] ) ? $this->ns[ $attr[1] ] : 'xxy';
+            $query .= ( $i+1 == $c && !in_array($match, $special) ? " $pfx." : ' ' ). $match;
+            if ( $i == 0 ) $func = $match;
+        } //var_dump($func);
+        $query = strtolower($query);
+        if ( $func == 'Order' && in_array($func, $this->func))
+            $query = str_replace('order by', ',', $query);
+        $this->func[] = $func;
+        if ( $match == 'Join' ) {
+            $jt = strtolower($attr[0]);
+            $primaryKey = $this->model->primary();
+            $secondaryKey = $this->model->secondary()[0];
+            $this->query .=  $query. " $jt xyz{$this->j} ON xyz{$this->j}.{$primaryKey} = xxy.{$secondaryKey}";
+            $this->ns[$jt] = 'xyz'.$this->j;
+        } 
+        else if ( isset($attr[0]) && $match == 'Limit' )
+            $this->query .= "$query ". mysql_real_escape_string($attr[0]);
+        else if ( isset($attr[0]) )
+            $this->query .= "$query = '". mysql_real_escape_string($attr[0]). "'";
+        else
+            $this->query .= $query;
+        $this->j++;
+        return $this;
+    }
+    
+    public function fetch() { //var_dump("SELECT * FROM {$this->model->table()} xxy ". $this->query. $this->add);//exit;
+        return $this->db->fetch( "SELECT * FROM {$this->model->table()} xxy ". $this->query. $this->add );
+    }
 }
 
 class ModelInsert

@@ -8,7 +8,10 @@ class Fields extends \CV\core\model
 
 	public function getAll()
 	{
-		$data = $this->select( 'ORDER BY fieldset_id ASC, position ASC' );
+        $data = $this->select()
+                ->OrderByFieldset_idAsc()
+                ->OrderByPositionAsc()
+                ->fetch();
 		$remapped = [];
 		foreach ( $data as $node ) {
 			if ( !isset( $remapped[ $node->fieldset_id ] ) )
