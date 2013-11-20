@@ -14,7 +14,6 @@ class Validator
 	
 	function __construct()
 	{
-		// Var init
 		$this->stack = (object) null;
 		$this->validators = new validateValidators();
 	}

@@ -12,18 +12,22 @@ class Model
 	
 	private static $db;
 	protected $table;
-	protected $primary;
-	protected $secondary = [];
 	private static $models;
-	
+    
+    public static $fields = [];
+    public static $primKey = '';
+    public static $foreignKeys = [];
+    
+    public $name;
+            
 	function __construct()
 	{
 		if ( !self::$db ) {
 			self::$db = new DB( \CV\DB_HOST, \CV\DB_USER, \CV\DB_PASW, \CV\DB_NAME );
 			self::$models = new Obj;
 		}
-		$ccn = get_called_class();
-		$this->table = strtolower( substr( $ccn, strrpos( $ccn, '\\' )+1 ) );
+		$this->name = get_called_class();
+		$this->table = strtolower( substr( $this->name, strrpos( $this->name, '\\' )+1 ) );
 	}
 	
 	public function &db()
@@ -31,29 +35,14 @@ class Model
 		return self::$db;
 	}
 	
-	public function primary()
-	{
-		return $this->primary;
-	}
-	
-	public function secondary()
-	{
-		return $this->secondary;
-	}
-	
 	public function table()
 	{
 		return $this->table;
 	}
-	
-	/*protected function select( $additional = '' )
-	{
-		return self::$db->fetch( "SELECT * FROM $this->table ". $additional );
-	}*/
     
-    protected function select( $additional = '' )
+    protected function select( $select = '*' )
 	{
-		return new ModelSelect( $this, $additional );
+		return new ModelSelect( $this, $select);
 	}
 	
 	protected function update()
@@ -71,7 +60,9 @@ class Model
 		if ( !$id )
 			return false;
 		try {
-			self::$db->query( "DELETE FROM $this->table WHERE $this->primary = '$id' ". $additional );
+            $pkName = $this->name;
+            $pk = $pkName::$primKey;
+			self::$db->query( "DELETE FROM $this->table WHERE $pk = '$id' ". $additional );
 		} catch ( Exception $e ) {
 			return false;
 		}
@@ -101,9 +92,9 @@ class ModelSelect {
     protected $db;
 	protected $stack;
 	protected $model;
-    private $j = 0;
     private $ns = [];
     private $func = [];
+    private $join = false;
      
 	function __construct( \CV\core\Model $model, $add )
 	{
@@ -114,43 +105,102 @@ class ModelSelect {
         $this->add = $add;
     }
     
-    function __call($p,$attr) 
+    function __call( $p, $attr ) 
     {   
         $special = ['Join', 'Asc', 'Desc', 'Limit'];
-        preg_match_all('/[A-Z]/', $p, $matches, PREG_OFFSET_CAPTURE);
+        preg_match_all( '/[A-Z]/', $p, $matches, PREG_OFFSET_CAPTURE );
         $query = '';
         $func = '';
         for ($i = 0, $c = sizeof($matches[0]); $i < $c; $i++) {
             $begin = $matches[0][$i][1];
-            $end = !empty($matches[0][$i+1][1]) ? $matches[0][$i+1][1] - $begin : strlen($p) - $begin;
+            $end = !empty( $matches[0][$i+1][1] ) ? $matches[0][$i+1][1] - $begin : strlen($p) - $begin;
             $match = substr($p, $begin, $end );    
-            $pfx = isset($attr[1]) && isset( $this->ns[ $attr[1] ] ) ? $this->ns[ $attr[1] ] : 'xxy';
+            $pfx = isset($attr[1]) && isset( $this->ns[ $attr[1] ] ) ? $this->ns[ $attr[1] ] : $this->model->table();
             $query .= ( $i+1 == $c && !in_array($match, $special) ? " $pfx." : ' ' ). $match;
             if ( $i == 0 ) $func = $match;
-        } //var_dump($func);
+        } 
         $query = strtolower($query);
         if ( $func == 'Order' && in_array($func, $this->func))
             $query = str_replace('order by', ',', $query);
         $this->func[] = $func;
+
         if ( $match == 'Join' ) {
+            $this->join = true;
             $jt = strtolower($attr[0]);
-            $primaryKey = $this->model->primary();
-            $secondaryKey = $this->model->secondary()[0];
-            $this->query .=  $query. " $jt xyz{$this->j} ON xyz{$this->j}.{$primaryKey} = xxy.{$secondaryKey}";
-            $this->ns[$jt] = 'xyz'.$this->j;
-        } 
+            $jtClass = '\CV\app\models\\'.ucfirst($jt);
+            $pkModel = $this->model->name;
+            
+            if ( !isset($pkModel::$foreignKeys[$jt]) ) {   
+                foreach ($jtClass::$foreignKeys as $pModel => $pKey);
+                $pClass = '\CV\app\models\\'.ucfirst($pModel);
+                $primaryKey = $pKey;
+                $foreignKey = "$pModel.". $pClass::$primKey;
+            } else {
+                $primaryKey = $jtClass::$primKey;
+                $foreignKey = $this->model->table(). '.'. $pkModel::$foreignKeys[$jt]; 
+            }
+            $this->query .=  "\n". $query. " $jt ON {$jt}.{$primaryKey} = {$foreignKey}";
+            $this->ns[$jt] = $jt;
+        }
         else if ( isset($attr[0]) && $match == 'Limit' )
             $this->query .= "$query ". mysql_real_escape_string($attr[0]);
         else if ( isset($attr[0]) )
             $this->query .= "$query = '". mysql_real_escape_string($attr[0]). "'";
         else
             $this->query .= $query;
-        $this->j++;
         return $this;
     }
     
-    public function fetch() { //var_dump("SELECT * FROM {$this->model->table()} xxy ". $this->query. $this->add);//exit;
-        return $this->db->fetch( "SELECT * FROM {$this->model->table()} xxy ". $this->query. $this->add );
+    public function fetch() 
+    { 
+        $query = '';
+        if ( $this->join ) {    
+            if ( $this->add == '*' ) { 
+                $select = [ $this->model->table(). '.*' ];
+                foreach ( $this->ns as $table ) {
+                    $pClass = '\CV\app\models\\'.ucfirst($table);
+                    foreach ( $pClass::$fields as $field ) {
+                        if ( $field == $pClass::$primKey )
+                            $select[] = $table. '.'. $field;
+                        else
+                            $select[] = $table. '.'. $field. ' AS '. $table. '_'. $field;
+                    }
+                }
+                $select = implode(",\n", $select);
+            } else
+                $select = $this->add;
+            $query = "SELECT $select FROM {$this->model->table()} ". $this->query;
+            
+            $fetch = $this->db->fetch($query);
+            $return = new \CV\core\Object();
+            $this->ns[ $this->model->table() ] = $this->model->table();
+            foreach ( $this->ns as $ns ) {
+                $return->$ns = [];
+                $rns =& $return->$ns;
+                $uniqIds = [];
+                foreach ( $fetch as $node ) {
+                    if ( isset( $uniqIds[ $node->{$ns.'_id'} ] ) ) continue;
+                    if ( !isset( $node->{$ns.'_id'} ) ) continue;
+                    $nodeN = new \CV\core\Object();        
+                    foreach ( $node as $key=>$value ) {
+                        if ( $key != $ns.'_id' )
+                            $key = str_replace( $ns. '_', '', $key );
+                        $nodeN->$key = $value;
+                    }
+                    $pClass = '\CV\app\models\\'.ucfirst($ns);
+                    if ( !empty( $pClass::$foreignKeys ) ) {
+                        foreach ($pClass::$foreignKeys as $pModel => $pKey);
+                        $rns[ $node->{$pModel.'_id'} ][] = $nodeN;
+                    } else
+                        $rns[] = $nodeN;
+                    $uniqIds[ $node->{$ns.'_id'} ] = true;
+                }
+            } 
+        } else {
+            $query = "SELECT $this->add FROM {$this->model->table()} ". $this->query;  
+            $return = $this->db->fetch($query);
+        }
+        return $return;
     }
 }
 
@@ -173,6 +223,14 @@ class ModelInsert
 		if ( !isset( $this->stack[$key] ) )
 			$this->stack[$key] = [];
 		$this->stack[$key][] = $value;
+	}
+    
+    public function __call( $key, $value )
+	{
+		if ( !isset( $this->stack[$key] ) )
+			$this->stack[$key] = [];
+		$this->stack[$key][] = $value;
+        return $this;
 	}
 	
 	public function save()
@@ -221,15 +279,16 @@ class ModelUpdate
 	
 	public function save()
 	{
-		try {
-			$rows = $this->stack[ $this->model->primary() ];
+		$pkModel = $this->model->name;
+        try {
+			$rows = $this->stack[ $pkModel::$primKey ];
 			for ( $i = 0; $i < sizeof( $rows ); $i++ ) {
 				$row = '';
 				$where = '';
 				$j = 1;
 				foreach ( $this->stack as $column=>$values ) {
 					$val = mysql_real_escape_string( $values[$i] );
-					if ( $column == $this->model->primary() )
+					if ( $column == $pkModel::$primKey )
 						$where = "$column = '{$val}'";
 					else {
 						$row .= "$column = '{$val}'";

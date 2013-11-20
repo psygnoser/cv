@@ -4,19 +4,23 @@ namespace CV\app\models;
 
 class Fieldsets extends \CV\core\model
 {
-	protected $primary = 'id';
+    public static $fields = ['fieldsets_id', 'name', 'position'];
+    public static $primKey = 'fieldsets_id';
+    public static $foreignKeys = [
+        'sections'=>'sections_id'
+    ];
 
 	public function getAll()
 	{
         $data = $this->select()
-                ->OrderBySection_idAsc()
+                ->OrderBySections_idAsc()
                 ->OrderByPositionAsc()
                 ->fetch();
 		$remapped = [];
 		foreach ( $data as $node ) {
-			if ( !isset( $remapped[ $node->section_id ] ) )
-				$remapped[ $node->section_id ] = [];
-			$remapped[ $node->section_id ][] = $node;
+			if ( !isset( $remapped[ $node->sections_id ] ) )
+				$remapped[ $node->sections_id ] = [];
+			$remapped[ $node->sections_id ][] = $node;
 		}
 		return $remapped;
 	}
@@ -24,8 +28,8 @@ class Fieldsets extends \CV\core\model
 	public function getBySectionId( $sectionId )
 	{
         $data = $this->select()
-                ->WhereSection_id( (int)$sectionId )
-                ->OrderBySection_idAsc()
+                ->WhereSections_id( (int)$sectionId )
+                ->OrderBySections_idAsc()
                 ->OrderByPositionAsc()
                 ->fetch();
 		return $data;
@@ -35,7 +39,7 @@ class Fieldsets extends \CV\core\model
 	{
 		$update = $this->update();
 		foreach ( $data as $position=>$id ) {
-			$update->id = $id;
+			$update->fieldsets_id = $id;
 			$update->position = $position;
 		}
 		$update->save();
@@ -44,7 +48,7 @@ class Fieldsets extends \CV\core\model
 	public function saveField( $id, $name, $data )
 	{
 		$update = $this->update();
-		$update->id = $id;
+		$update->fieldsets_id = $id;
 		$update->$name = $data;
 		$update->save();
 	}
@@ -53,7 +57,7 @@ class Fieldsets extends \CV\core\model
 	{
 		$insert = $this->insert();
 		$insert->name = '...';
-		$insert->section_id = $section_id;
+		$insert->sections_id = $section_id;
 		$insert->position = $position;
 		$insert->save();
 		

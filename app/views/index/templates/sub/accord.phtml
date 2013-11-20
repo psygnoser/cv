@@ -1,16 +1,15 @@
 
-	<div id="<?= $this->view->section->id ?>">
-		<span id="<?= $this->view->section->id ?>" class="edit"><?= $this->view->section->name ?></span>
-		<h3><a href="#">&nbsp;</a></h3>
+	<div id="tab<?= $this->view->section->sections_id ?>" idtab="<?= $this->view->section->sections_id ?>" role="tabpanel">
+		<!--span id="<?= $this->view->section->id ?>" class="edit"><?= $this->view->section->name ?></span>
+		<h3><a href="#">&nbsp;</a></h3-->
 		<div class="fieldsets">
 			<div class="fs">
 			<?php 
-			$fielsdets = isset( $this->view->fieldsets[ $this->view->section->id ] ) ? $this->view->fieldsets[ $this->view->section->id ] : [];
+			$fielsdets = isset( $this->view->fieldsets[ $this->view->section->sections_id ] ) ? $this->view->fieldsets[ $this->view->section->sections_id ] : [];
 			foreach ( $fielsdets as $fieldset ): 
 				$this->sub( 'sub/fieldset', [ 'fieldset'=>$fieldset, 'fields'=>$this->view->fields ] );
 			endforeach; ?>
 			</div>
 			<div class="controls fieldsets"><a title="Add a new fieldset!" class="add" href="#"></a></div>
 		</div>
-		
 	</div>

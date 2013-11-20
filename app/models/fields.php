@@ -4,19 +4,23 @@ namespace CV\app\models;
 
 class Fields extends \CV\core\model
 {
-	protected $primary = 'id';
+    public static $fields = ['fields_id', 'name', 'data', 'position'];
+	public static $primKey = 'fields_id';
+    public static $foreignKeys = [
+        'fieldsets'=>'fieldsets_id'
+    ];
 
 	public function getAll()
 	{
         $data = $this->select()
-                ->OrderByFieldset_idAsc()
+                ->OrderByFieldsets_idAsc()
                 ->OrderByPositionAsc()
                 ->fetch();
 		$remapped = [];
 		foreach ( $data as $node ) {
-			if ( !isset( $remapped[ $node->fieldset_id ] ) )
-				$remapped[ $node->fieldset_id ] = [];
-			$remapped[ $node->fieldset_id ][] = $node;
+			if ( !isset( $remapped[ $node->fieldsets_id ] ) )
+				$remapped[ $node->fieldsets_id ] = [];
+			$remapped[ $node->fieldsets_id ][] = $node;
 		}
 		return $remapped;
 	}
@@ -25,7 +29,7 @@ class Fields extends \CV\core\model
 	{
 		$update = $this->update();
 		foreach ( $data as $position=>$id ) {
-			$update->id = $id;
+			$update->fields_id = $id;
 			$update->position = $position;
 		}
 		$update->save();
@@ -34,7 +38,7 @@ class Fields extends \CV\core\model
 	public function saveField( $id, $name, $data )
 	{
 		$update = $this->update();
-		$update->id = $id;
+		$update->fields_id = $id;
 		$update->$name = $data;
 		$update->save();
 	}
@@ -44,7 +48,7 @@ class Fields extends \CV\core\model
 		$insert = $this->insert();
 		$insert->name = '...';
 		$insert->data = '...';
-		$insert->fieldset_id = $fieldset_id;
+		$insert->fieldsets_id = $fieldset_id;
 		$insert->position = $position;
 		$insert->save();
 		

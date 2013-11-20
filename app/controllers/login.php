@@ -13,13 +13,6 @@ class Login extends \CV\core\Controller
 	
 	public function indexAction() 
 	{
-		//print 'indexAction';
-		//die('indexAction');
-		//$this->setAction('show');
-		//$this->setActionView('index');
-		//$this->setView('index');
-		//var_dump('overloaded');//exit;
-		//var_dump(debug_backtrace(false));
 		$this->redirect('');
 	}
 	
@@ -35,7 +28,7 @@ class Login extends \CV\core\Controller
 		}
 		session_regenerate_id( true );
 		$u = new Obj;//& Reg::set( 'u', new Obj ); 
-		$u->id = $data->id;
+		$u->id = $data->users_id;
 		$u->user = $_POST['user'];
 		$u->hash = $data->hash;
 		$u->role = 'registered';
@@ -81,6 +74,8 @@ class Login extends \CV\core\Controller
 	{
 		$salt = sha1(uniqid('', true). mt_rand(21474836, 2147483647));
 		var_dump(\CV\core\Auth::getHash($this->get->pasw. $salt), $salt);
+        $this->disableView();
+		$this->disableLayout();
 	}
 }
 

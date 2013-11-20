@@ -1,12 +1,12 @@
-			<fieldset id="<?= $this->view->fieldset->id ?>">
+			<fieldset id="<?= $this->view->fieldset->fieldsets_id ?>">
 				<a title="Remove this fieldset!" class="remove" href="#"></a>
 				<legend>
 					<div class="bull bullw"></div>
-					<div id="<?= $this->view->fieldset->id ?>" class="edit"><?= $this->view->fieldset->name ?></div>
+					<div id="<?= $this->view->fieldset->fieldsets_id ?>" class="edit"><?= $this->view->fieldset->name ?></div>
 				</legend>
 				<div class="fields">
 				<?php
-				$fields = isset( $this->view->fields[ $this->view->fieldset->id ] ) ? $this->view->fields[ $this->view->fieldset->id ] : array();
+				$fields = isset( $this->view->fields[ $this->view->fieldset->fieldsets_id ] ) ? $this->view->fields[ $this->view->fieldset->fieldsets_id ] : array();
 				foreach ( $fields as $field ): 
 					$this->sub( 'sub/dl', [ 'field'=>$field ] );
 				endforeach; ?>

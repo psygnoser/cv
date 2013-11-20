@@ -9,6 +9,8 @@
 		<link href='http://fonts.googleapis.com/css?family=Arizonia' rel='stylesheet' type='text/css'>
 		<script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
 		<script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
+		<!--script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>-->
 		<script type="text/javascript" src="js/jquery.jeditable.mini.js"></script>
 		<script type="text/javascript" src="js/validationOO.js"></script>
 		<script type="text/javascript">
@@ -87,7 +89,10 @@
 			<div id="main">
 				<div id="header"><h1><span>CV</span></h1></div>
 				<div id="content">
-					<div>
+                    <div class="controls accord">
+                        <a title="Add a new section!" class="add" href="#"></a>
+                    </div>
+					<div id="sections">
 					<?= $this->getContent() ?>
 					</div>
 				</div>

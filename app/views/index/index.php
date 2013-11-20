@@ -18,6 +18,12 @@ class Index extends \CV\core\View
 	
 	public function deniedAction()
 	{
+        //die('dddd');
+	}
+    
+    public function e404Action()
+	{
+        header("HTTP/1.0 404 Not Found");
 	}
 	
 	public function introAction()
@@ -26,11 +32,10 @@ class Index extends \CV\core\View
 	
 	public function showAction()
 	{
-        //var_dump($this->model('Sections')->validHash( $this->get->id ));exit;
-        //var_dump($this->model('Fieldsets')->getBySectionId('2')); exit;
-		$this->view->sections = $this->model('Sections')->getByHash( $this->get->id );
-		$this->view->fieldsets = $this->model('Fieldsets')->getAll();
-		$this->view->fields = $this->model('Fields')->getAll();
+		$data = $this->model('Sections')->getByHashAll( $this->get->id );
+        $this->view->sections = $data->sections;
+        $this->view->fieldsets = $data->fieldsets;
+		$this->view->fields = $data->fields;
 	}
 }
 

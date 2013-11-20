@@ -40,8 +40,11 @@ class Index extends \CV\core\Controller
 	
 	public function createAction()
 	{
-		$id = $this->model( ucfirst( $this->get->type ) )
-			->create( $_POST['parent_id'], $_POST['position'] );
+		$model = $this->model( ucfirst( $this->get->type ) );
+        if ( isset($_POST['parent_id']) )
+			$id = $model->create( $_POST['parent_id'], $_POST['position'] );
+        else
+            $id = $model->create( $_POST['position'] );
 
 		$this->view()->setHeader( \CV\core\ViewHeader::JSON );
 		print json_encode(['fid'=>$id]);
@@ -83,39 +86,17 @@ class Index extends \CV\core\Controller
 		$this->view()->renderView( 'index/templates/sub/'. $this->get->tpl );
 		$this->disableLayout();
 	}
-	
-	/*public function headersAction()
-	{
-		$this->view()->setHeader( \CV\core\ViewHeader::JSON );
-		print "{neki:[0,1,2],boo:'gggg'}";
-		//print '<?xml version="1.0" encoding="UTF-8"?><base><neki>boo</neki></base>';
-		$this->disableView();
-		$this->disableLayout();
-	}*/
-	
-	/*public function publicAction()
-	{//die('sf');
-		//$this->setView('edit');
-		//var_dump($this->get->id);
-		//$data = $this->model('Sections')->validHash( $this->get->id );
-		//var_dump($data);
-		if ( $this->model('Sections')->validHash( $this->get->id ) )
-			$this->setAction('index');
-		else
-			$this->setAction('denied');
-			//return $this->deniedAction();
-			//$this->setView('index');
-		//return $this->indexAction();
-	}
-	*/
+
 	public function deniedAction()
 	{
-		//die('ACCESS DENIED');
+	}
+    
+    public function e404Action()
+	{
 	}
 	
 	public function introAction()
 	{
-		//die('ACCESS DENIED');
 	}
 }
 

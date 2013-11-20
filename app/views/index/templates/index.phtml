@@ -1,26 +1,24 @@
 <?php $this->beginCapture('head'); ?>
 <script type="text/javascript">
 $(function(){
-	var stop = false;
+	/*var stop = false;
 	$( "#accordion h3" ).click(function( event ) {
 		if ( stop ) {
 			event.stopImmediatePropagation();
 			event.preventDefault();
 		}
-	});
-	$( "#accordion" )
-		.accordion({
-			header: "> div > h3",
-			autoHeight: false
-		});
-	/*$( "#accordion > div > h3" ).live( 'mouseup', function(){console.log('sdfsfd');
-		$(this).parent().children('div.fieldsets').slideToggle(500);
 	});*/
+	$( "#accordion" ).tabs();
 	$('.add').hide();
 });
 </script>
 <?php $this->endCapture('head'); ?>
 <div id="accordion">
+    <ul id="tabs" role="tablist">
+        <?php  foreach ( (array) $this->view->sections as $tab ): ?>
+        <li id="t<?= $tab->sections_id ?>"><a href="#tab<?= $tab->sections_id ?>"><div id="<?= $tab->sections_id ?>" class="edit"><?= $tab->name ?></div></a></li>
+    	<?php endforeach;  ?>
+    </ul>
 	<?php  foreach ( (array) $this->view->sections as $section ):
 		$this->sub( 'sub/accord', [ 
 			'section'=>$section, 

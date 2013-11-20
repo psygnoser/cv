@@ -1,11 +1,16 @@
 $(function(){
 	$('.add').show();
 	
-	$( "#accordion" ).sortable({
-			axis: "y",
-			handle: "a",
+	$( "#accordion" ).find( ".ui-tabs-nav" ).sortable({
+			axis: "x",
+			//handle: "ul#tabs li",
 			stop: function(e, ui) {
-				var items = $(this).sortable('toArray');
+				var items = []; 
+                $( "#accordion #tabs" ).children('li').each(function(){ 
+                    $id = $(this).attr('id');
+                    $id = $id.slice(1,$id.length);
+                    items.push( $id ); 
+                });
 				$.post( 
 					"index/position/type/sections", 
 					{data: items},
@@ -21,7 +26,6 @@ $(function(){
 			handle: "div.bull",
 			start: function(e, ui) {
 				ui.item.css({opacity: 0.5});
-				//$(this).children('fieldset').css('height', '50px');
 			},
 			stop: function(e, ui) {
 				var items = $(this).sortable('toArray');
@@ -32,7 +36,6 @@ $(function(){
 						//console.log( data )
 					});
 				ui.item.css({opacity: 1.0});
-				//$(this).children('fieldset').css('height', 'auto');
 			}
 		});
 	$('#accordion .fields').sortable({
@@ -53,7 +56,7 @@ $(function(){
 			}
 		});
 
-	$('#accordion > div span.edit').editable('index/save/type/sections/name/name', { 
+	$('#accordion #tabs div.edit').editable('index/save/type/sections/name/name', { 
 		indicator: 'Saving...',
 		tooltip: 'Click to edit...'
 	});
@@ -75,7 +78,7 @@ $(function(){
 		tooltip: 'Click to edit...'
 	});
 
-	$('.controls.fields .add, dl > .remove, fieldset > .remove, .controls.fieldsets .add').live('click', function(event){
+	$('.controls.fields .add, dl > .remove, fieldset > .remove, .controls.fieldsets .add, .controls.accord .add').live('click', function(event){
 		event.stopImmediatePropagation();
 		event.preventDefault();
 	});
@@ -132,13 +135,13 @@ $(function(){
 			if ( data.error )
 				alert( data.msg );
 			else
-				t.parent().remove();//$('fieldset#'+id)
+				t.parent().remove();
 		});
 	});
-
+    
 	$('.controls.fieldsets .add').live('mouseup', function(event){
 
-		var section_id = $(this).parent().parent().parent().attr('id');
+		var section_id = $(this).parent().parent().parent().attr('idtab');
 		var position = $(this).parent().prev().children().length;
 		var t = $(this);
 		$.post( 
@@ -155,6 +158,32 @@ $(function(){
 				t.parent().prev().append(node);
 
 				$('#accordion .fieldsets legend div.edit[id='+ data.fid+ ']').editable('index/save/type/fieldsets/name/name', { 
+					indicator: 'Saving...',
+					tooltip: 'Click to edit...'
+				});
+			});
+		});
+	});
+    
+    $('.controls.accord').show();
+    $('.controls.accord .add').live('mouseup', function(event){ 
+
+		var position = $('#tabs').children().length;
+		var t = $(this);
+		$.post( 
+			'index/create/type/sections', 
+			{'position': position},
+			function ( data ) {
+
+			$.post( 'index/sub/tpl/accord', function( node ) {
+
+				node = $(node);
+				node.attr('id', 'tab'+data.fid );
+                node.attr('idtab', data.fid );
+				$('div#sections > #accordion').append(node);
+                $('#accordion').tabs('add', '#tab'+data.fid, '...');
+                //console.log('#accordion #tabs div.edit[id='+ data.fid+ ']');
+                $('#accordion #tabs div.edit[id='+ data.fid+ ']').editable('index/save/type/sections/name/name', { 
 					indicator: 'Saving...',
 					tooltip: 'Click to edit...'
 				});

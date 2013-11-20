@@ -11,6 +11,8 @@ body {
 	background: #293669/*#3B4B66*/;
 }
 
+*:focus { -moz-outline-style: none; outline:none; }
+
 h1 { margin:20px 0 0 20px; }
 h1 span{ /*font-family: 'Arizonia', cursive;*/ font-size: 66.6px; color:#fff}
 
@@ -36,7 +38,9 @@ h1 span{ /*font-family: 'Arizonia', cursive;*/ font-size: 66.6px; color:#fff}
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#637ba5', endColorstr='#0c1a2d',GradientType=0 ); /* IE6-8 */
 }
 #main > div { padding: 10px; }
- 
+
+#content > div {overflow: auto;clear: both;}
+
 #copyright { width:900px; margin: 0px auto 0px auto; padding-bottom:30px; color:white; text-align: center; overflow:hidden; }
 
 .ui-accordion-header a { font-size: 14px !important;  font-weight: bold; }
@@ -68,9 +72,12 @@ legend div.edit { float:right; margin-right: 10px; }
 .fields textarea { height:100px !important; }
 
 #accordion span.edit { position: absolute; z-index: 3; margin:8px 0px 0px 30px; font-weight: bold; }
+#accordion {overflow: auto;}
 
 h3 .bull { margin: 10px 10px 0 30px; }
 h3 a.edit { /*float:left; display: block; background: blue;*/ }
+
+#accordion #tabs .edit input { height:12px !important; }
 
 .controls { overflow: hidden; padding: 10px; float:right}
 .controls .add { float:left; display:block; width: 16px; height: 16px; background: url(../images/sq_plus.png); }
@@ -101,3 +108,4 @@ fieldset > .remove {position: absolute; display: none; margin:-25px 0 0 791px; w
 
 .denied { -webkit-border-radius: 10px;-moz-border-radius: 10px; border-radius: 10px; border: 1px solid red; background: #fff; color:red; text-align: center; font-size: 16px; padding:10px; }
 
+.controls.accord { background: #fff;margin-bottom:10px; display: none;}
