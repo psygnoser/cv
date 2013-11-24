@@ -1,8 +1,7 @@
 <?php
 
-
 namespace CV\core;
-use \CV\core\Data_Object as Obj;
+use CV\core\Data_Object as Obj;
 
 class View
 {

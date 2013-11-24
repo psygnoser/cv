@@ -23,11 +23,11 @@ class Login extends \CV\core\Controller
 		if ( !$data ) {
 			print $this->view()->json( [ 
 				'error'=>1, 
-				'message'=>(object) [ 'username'=>[ 'Napačno uporabniško ime in/ali geslo' ] ] ] );
+				'message'=>(object) [ 'username'=>[ 'Invalid e-mail and/or password' ] ] ] );
 			exit;
 		}
 		session_regenerate_id( true );
-		$u = new Obj;//& Reg::set( 'u', new Obj ); 
+		$u = new Obj;
 		$u->id = $data->users_id;
 		$u->user = $_POST['user'];
 		$u->hash = $data->hash;
@@ -46,14 +46,15 @@ class Login extends \CV\core\Controller
 	public function validateAction()
 	{
 		$validator = new \CV\core\Validator;
-		$validator->user( '', 'email', 'Email fail' );
-		$validator->pasw( '', 'notEmpty', 'Pasw empty' );
+		$validator->user( '', 'notEmpty', 'Write your e-mail', 1 );
+        $validator->user( '', 'email', 'Invalid e-mail', 2 );
+		$validator->pasw( '', 'notEmpty', 'Write your password' );
 		$validator->exe();
-		//var_dump($validator->getErrors());exit;
+		
 		$errors = $validator->getErrors();
 		$response = empty( $errors ) ? 
 			[ 'error'=>0 ] :
-			[ 'message'=>(object) $errors ];
+			[ 'message'=>(object) $errors ]; 
 		print $this->view()->json( $response );
         
 		$this->disableView();

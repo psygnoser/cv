@@ -81,6 +81,11 @@ class Sections extends \CV\core\model
 		
 		return $insert->id();
 	}
+    
+    public function remove( $id )
+	{
+		return $this->delete( $id );
+	}
 }
 
 ?>

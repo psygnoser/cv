@@ -2,9 +2,10 @@
  * Form Validation & Handling class
  *
  * @todo a LOT of clean up; fix inconsistencies and optimize thoroughly
- *
- * @since 201201182202
- * @version 1.6.5
+ * 
+ * @author Tilen Leban <psygnoser@gmail.com>
+ * @since 201311241613
+ * @version 1.6.7
  * @inherits jQuery >= 1.4.2
  *
  * @param string	form			Targeted form-element jQuery-type selector
@@ -239,18 +240,18 @@ function AS_Validation( form, url, urlAction, urlVld, urlVldField, initPreStack,
 
 		if ( t.rt ) {
 			$(this.f+ " input:not(input[type='button'], input[type='submit'], input[type=radio], input[type=checkbox], input[type='file']), "+ this.f+ " textarea")
-				.live( 'keyup', function(e){ t.onVldFld( e, this ); } )
-				.live( 'blur', function(e){ t.field( e, this ); } );
+				.on( 'keyup', function(e){ t.onVldFld( e, this ); } )
+				.on( 'blur', function(e){ t.field( e, this ); } );
 			$(this.f+ " select")
-				.live( 'change', function(e){ t.onVldFld( e, this ); } )
-				.live( 'blur', function(e){ t.field( e, this ); } );
+				.on( 'change', function(e){ t.onVldFld( e, this ); } )
+				.on( 'blur', function(e){ t.field( e, this ); } );
 		}
 
 		this.addPre( function( t, e ) {
 			e.preventDefault();
 		});
 
-		$(this.f).live( 'submit', function(e) {
+		$(this.f).on( 'submit', function(e) {
 
 			t.submitted = true;
 			t.runPreStack( t ,e );
@@ -267,14 +268,14 @@ function AS_Validation( form, url, urlAction, urlVld, urlVldField, initPreStack,
 				} 
 				data[this.name].push( $(this).val() );
 			});
-		
+            //console.log(data);
 			if ( t.urlVld ) {
-				$.post( t.url+ '/'+t.urlVld, data, function(resp) {
-
+				$.post( t.url+ '/'+t.urlVld, data, function(resp) {//console.log(resp);
+                    resp = resp.message;
 					var vldStack = [];
 					var errs = {};
-					var first = null;
-					for ( var id in resp ) {
+					var first = null; 
+					for ( var id in data ) { 
 
 						if ( t.excluded[ id ]  ) {
 							continue;
@@ -284,6 +285,8 @@ function AS_Validation( form, url, urlAction, urlVld, urlVldField, initPreStack,
 								continue;
 							t.eachStack[i]( t, id );
 						}
+                        if ( typeof resp == 'undefined' ) continue;
+                        
 						var iLength = 0;
 						for ( var j in resp[id] ) {
 							iLength++;
@@ -357,7 +360,7 @@ function AS_Alerter_Label( form, t, params )
 		$(t.f+ ' ul.errors').remove();
 	}
 
-	this.each = function( f, id ){}
+	this.each = function( t, id ){}
 
 	this.validate = function( errors )
 	{
@@ -385,11 +388,12 @@ function AS_Alerter_LabelSingle( form, t, params )
 {
 	this.f = form;
 
-	this.pre = function( t ){}
+	this.pre = function( t ){
+        $(t.f).find('.errors').remove();
+    }
 
-	this.each = function( f, id )
-	{
-		$(f+  ' #' + id).parent().find('.errors').remove();
+	this.each = function( t, id ){
+		//$(t.f+  ' #' + id).parent().find('.errors').remove();
 	}
 
 	this.validate = function( errors )
@@ -426,11 +430,11 @@ function AS_PreInit_InlineLabel( t )
 	selector.each( function() {
 		this._defVal = this.value;
 	});
-	selector.live( 'focus', function(e) {
+	selector.on( 'focus', function(e) {
 		if ( this.value == this._defVal )
 			this.value = '';
 	});
-	selector.live( 'blur', function(e) {
+	selector.on( 'blur', function(e) {
 		if ( this.value == '' ) {
 			this.value = this._defVal;
 		}

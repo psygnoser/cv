@@ -1,7 +1,6 @@
 <?php
 
 namespace CV;
-use \CV\core\Data_Object as Obj;
 
 require_once 'config.php';
 require_once 'core/application.php';
@@ -36,7 +35,7 @@ class MyApplication extends core\Application
 			$this->controller = 'index';
 			$this->action = 'intro';
 			
-		} else if ( !$loggedIn && !in_array( $this->controller, [ 'login', 'show' ] ) ) { 
+		} else if ( !$loggedIn && !in_array( $this->controller, [ 'login', 'show', 'register' ] ) ) { 
 			$this->controller = 'index';
 			$this->action = 'denied';
 		}

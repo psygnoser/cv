@@ -24,6 +24,16 @@ class Login extends \CV\core\Helper
 	{
 		return isset( $_SESSION['u'] );
 	}
+    
+    public function login($id, $email, $hash) 
+    {
+        $u = (object) null;
+		$u->id = $id;
+		$u->user = $email;
+		$u->hash = $hash;
+		$u->role = 'registered';
+		$_SESSION['u'] =& $u;
+    }
 }
 
 ?>

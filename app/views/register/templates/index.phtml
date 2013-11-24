@@ -1,0 +1,54 @@
+<?php $this->beginCapture('head'); ?>
+<script type="text/javascript">
+    $(function() {
+        var vr = new AS_Validation( 'form#register', '<?= \CV\PATH ?>register', 'set', 'validate', null, [ AS_PreInit_InlineLabel ] );
+        vr.setAlerter( AS_Alerter_LabelSingle, {output:'append'} );
+        //alert('fsdf');
+        function AS_Alerter_Reg( form )
+        {
+            this.f = form;
+
+            this.pre = function( t )
+            {
+            }
+
+            this.each = function( f, id ){}
+
+            this.validate = function( errors )
+            {
+                var o = '';
+                for ( id in errors ) {
+                    o += '<ul id="errors-' + id + '" class="errors">';			
+                    for ( errorKey in errors[id] ) {
+                        o += '<li>' + errors[id][errorKey] + '</li>';
+                    }
+                    o += '</ul>';
+                }
+                $('#reg-error')
+                    .html( o )
+                    .show();
+            }
+
+            this.post = function(){}
+        }
+    });
+</script>
+<?php $this->endCapture('head'); ?>
+<div id="accordion" class="ui-tabs ui-widget ui-widget-content ui-corner-all">
+<div class="fieldsets">
+    <div class="fs" style="margin-left: 18px">
+    <fieldset>
+    <legend>
+        <div>Register</div>
+    </legend>
+        <div id="reg-error"></div>
+    <div><form id="register">
+        <?php foreach ( $this->view->form as $field ): 
+					$this->sub( 'sub/form', [ 'field'=>$field ] );
+        endforeach; ?></form>
+    </div>
+</fieldset>
+                </div>
+	</div>
+
+</div>

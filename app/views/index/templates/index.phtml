@@ -1,22 +1,44 @@
 <?php $this->beginCapture('head'); ?>
 <script type="text/javascript">
+var _PATH = 'http://<?= $_SERVER['SERVER_NAME']. $_SERVER['REQUEST_URI'] ?>';
+var _edit = false;
+var _editFunc = null;
 $(function(){
-	/*var stop = false;
-	$( "#accordion h3" ).click(function( event ) {
-		if ( stop ) {
-			event.stopImmediatePropagation();
-			event.preventDefault();
-		}
-	});*/
-	$( "#accordion" ).tabs();
-	$('.add').hide();
+	$('.add, #accordion > .remove, #remove-dialog, .bullw').hide();
+    editFunc = function(){
+    $('#accordion #tabs .ui-state-active div.edit').editable('index/save/type/sections/name/name', { 
+            indicator: 'Saving...',
+            tooltip: 'Click to edit...',
+            callback: function(){
+                $('#accordion #tabs .ui-state-active a').html( $('#accordion #tabs .ui-state-active div.edit').html() );
+            }
+        });
+    }
+    $("#accordion").tabs({ activate: function( event, ui ){
+        if ( !_edit ) return;
+        ui.oldTab.children().find('div.edit').editable('destroy');
+        ui.oldTab.find('.ui-icon.ui-icon-close').hide(); 
+        editFunc();
+        $("#tabs .ui-state-active .ui-icon.ui-icon-close").show();
+    }});
+    $('#accordion #tabs, #accordion #tabs li, #accordion #tabs li a').off('keydown');
 });
 </script>
 <?php $this->endCapture('head'); ?>
-<div id="accordion">
+<div id="remove-dialog" title="Warning">
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
+        <span class="msg">Are you <b>*sure*</b>, you want to permanently remove this item?</span></p>
+</div>
+<div id="accordion">  <!--a title="Remove current tab!" class="remove" href="#"></a-->
+
     <ul id="tabs" role="tablist">
         <?php  foreach ( (array) $this->view->sections as $tab ): ?>
-        <li id="t<?= $tab->sections_id ?>"><a href="#tab<?= $tab->sections_id ?>"><div id="<?= $tab->sections_id ?>" class="edit"><?= $tab->name ?></div></a></li>
+        <li id="t<?= $tab->sections_id ?>">
+                
+            <a href="http://<?= $_SERVER['SERVER_NAME']. $_SERVER['REQUEST_URI'] ?>#tab<?= $tab->sections_id ?>"><?= $tab->name ?></a>
+            <div id="<?= $tab->sections_id ?>" class="edit"><?= $tab->name ?></div>
+            <span class="ui-icon ui-icon-close" role="presentation">Remove tab</span>
+        </li>
     	<?php endforeach;  ?>
     </ul>
 	<?php  foreach ( (array) $this->view->sections as $section ):

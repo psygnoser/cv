@@ -12,6 +12,9 @@ body {
 }
 
 *:focus { -moz-outline-style: none; outline:none; }
+a:hover { text-decoration: underline !important }
+
+a { color: #000 }
 
 h1 { margin:20px 0 0 20px; }
 h1 span{ /*font-family: 'Arizonia', cursive;*/ font-size: 66.6px; color:#fff}
@@ -45,15 +48,9 @@ h1 span{ /*font-family: 'Arizonia', cursive;*/ font-size: 66.6px; color:#fff}
 
 .ui-accordion-header a { font-size: 14px !important;  font-weight: bold; }
 
-/*#accordion > div { overflow: hidden; background: #fff; margin-bottom: 20px; -webkit-border-radius: 5px;-moz-border-radius: 5px; border-radius: 5px; }
-#accordion > div > span {  line-height: 22px; font-size: 16px; color:#000; }
-#accordion > div > div { padding:10px 0 0 32px; }
-#accordion > div h3 { background: url(smoothness/images/ui-bg_highlight-soft_75_cccccc_1x100.png); margin:0; padding: 10px; }
-#accordion > div h3 a { text-decoration: none; margin: 10px 0 0 5px; color:#000; }
-*/
 div.fs { padding-bottom: 20px; }
 
-fieldset { overflow:hidden; width: 792px; margin-top:10px; background: #f3f3f3; -webkit-border-radius: 5px;-moz-border-radius: 5px; border-radius: 5px;  }
+fieldset { overflow:hidden; width: 812px; margin-top:10px; background: #f3f3f3; -webkit-border-radius: 5px;-moz-border-radius: 5px; border-radius: 5px;  }
 fieldset legend {overflow:auto; background:#283346; -webkit-border-radius: 5px;-moz-border-radius: 5px; border-radius: 5px; padding:5px; color:#fff }
 
 dl { overflow: hidden; width: 790px; margin:0px;  }
@@ -72,17 +69,24 @@ legend div.edit { float:right; margin-right: 10px; }
 .fields textarea { height:100px !important; }
 
 #accordion span.edit { position: absolute; z-index: 3; margin:8px 0px 0px 30px; font-weight: bold; }
-#accordion {overflow: auto;}
+#accordion {overflow: auto;    min-height: 150px;}
 
-h3 .bull { margin: 10px 10px 0 30px; }
-h3 a.edit { /*float:left; display: block; background: blue;*/ }
-
-#accordion #tabs .edit input { height:12px !important; }
+#accordion .edit input { height:12px !important; border: 0px }
+#accordion .edit textarea { border: 0px }
+#accordion dt .edit input { width:180px !important }
+#accordion #tabs .ui-state-default.ui-state-active .edit { position:absolute; margin: 6px 0 0 14px; display:block}
+#accordion #tabs .ui-state-default .edit { display:none}
+#accordion #tabs .ui-state-active .edit { margin:6px 0 0 13px;}
+#accordion #tabs {/*width:95%*/ padding-right: 30px; height:33px}
+#accordion #tabs li { overflow:hidden }
+#accordion #tabs .ui-state-active a { visibility: hidden }
 
 .controls { overflow: hidden; padding: 10px; float:right}
+fieldset .controls {padding: 0px;}
 .controls .add { float:left; display:block; width: 16px; height: 16px; background: url(../images/sq_plus.png); }
 dl .remove { display:none; position: absolute; margin:10px 0 0 766px; width: 16px; height: 16px; background: url(../images/remove_16.png); }
-fieldset > .remove {position: absolute; display: none; margin:-25px 0 0 791px; width: 16px; height: 16px; background: url(../images/remove_16.png); }
+fieldset > .remove {position: absolute; display: none; margin:-25px 0 0 811px; width: 16px; height: 16px; background: url(../images/remove_16.png); }
+#accordion > .remove {position: absolute; z-index: 1; margin:45px 0px 0px 847px; width: 16px; height: 16px; background: url(../images/remove_16.png); }
 
 #top { width: 960px; margin: 0px auto 0px auto;  overflow: auto; }
 #top > div { 
@@ -108,4 +112,8 @@ fieldset > .remove {position: absolute; display: none; margin:-25px 0 0 791px; w
 
 .denied { -webkit-border-radius: 10px;-moz-border-radius: 10px; border-radius: 10px; border: 1px solid red; background: #fff; color:red; text-align: center; font-size: 16px; padding:10px; }
 
-.controls.accord { background: #fff;margin-bottom:10px; display: none;}
+.controls.accord { background: none ;margin: 5px 0px 0px 840px;position: absolute;z-index: 1; display: none;}
+
+form#register .errors, form#register input { float: left}
+
+span.ui-icon-close {float: right; display: none;}

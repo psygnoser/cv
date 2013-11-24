@@ -9,13 +9,9 @@ abstract class Loader
 	public final static function load( $class )
 	{
 		$class = preg_replace('|^'. __NAMESPACE__.'\\\|', '', $class );
-		$pathRaw = '../.'. '%s/'. str_replace('\\', '/', strtolower( $class ) ). '.php';		
-		$paths = array ( '', '/app/controllers', '/core', '/app/models', '/app/views', '/lib' ); 
-		foreach ( $paths as $pathNode ) {
-			$path = sprintf( $pathRaw, $pathNode ); //var_dump($path);
-			if ( file_exists( $path ) )
-				require_once $path;
-		}
+		$path = '../.'. '/'. str_replace('\\', '/', strtolower( $class ) ). '.php';
+        if ( file_exists($path) )
+            require_once $path;
 	}
 }
 
