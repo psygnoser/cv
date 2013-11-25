@@ -218,4 +218,6 @@ $(function(){
 		.on('mouseout', 'fieldset', function(event){
 			$(this).children().eq(0).hide();
 		});
+        
+    //$('input,textarea').addClass('ui-corner-all ui-state-default');
 });

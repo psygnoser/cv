@@ -25,11 +25,18 @@ class Form
     public function render($asString = false) 
     {
         $return = '';
-        $this->inputs['formBegin'] = '';
+        //$this->inputs['formBegin'] = '';
         foreach ($this->inputs[$this->name] as $input) {
+            $ref = '';
+            foreach ($input->validate as $vld) {
+                if ( $vld[3] ) {
+                    $ref = $vld[3];
+                    break;
+                }
+            }
             $this->render[$input->name] = (object) null;
             $return =& $this->render[$input->name]->field;
-            $return .= '<'. $input->tag. ' id="'. $input->id. '" name="'. $input->name. '" ';
+            $return .= '<'. $input->tag. ' id="'. $input->id. '" name="'. $input->name. '" ref="'. $ref. '" ';
             $return .= $input->tag != $input->tagType ? ' type="'. $input->tagType. '" ' : '';
             $return .= $input->closeTag ? '>'. $input->value. "</$input->tag>" : ' value="'. $input->value. '" />';
             $this->render[$input->name]->label = $input->label;
@@ -37,16 +44,18 @@ class Form
         return $asString ? implode('', $this->render) : (object) $this->render;
     }
     
-    public function validate( $vldClass = null, $method = '_POST') 
+    public function validate( $vldClass = null, $single = false, $method = '_POST') 
     {
         $validator = new \CV\core\Validator($method);
+        if ($single)
+            $validator->singleField();
         if ( $vldClass && class_exists($vldClass) )
             $validator->setValidators($vldClass);
 		foreach ($this->inputs[$this->name] as $input) {
             $field = $input->name;
             if ( $input->validate )
                 foreach ($input->validate as $valid) {
-                    $validator->$field( '', $valid[0], $valid[1], $valid[2] );
+                    $validator->$field( $input->value, $valid[0], $valid[1], $valid[2], $valid[3] );
                 }
         }
 		$validator->exe();

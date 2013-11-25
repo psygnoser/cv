@@ -148,7 +148,7 @@ abstract class Application
 				$return = $this->output;
 			$this->postRender();
 			return $return;
-		} catch ( ApplicationException $e ) {
+		} catch ( application\AppException $e ) {
 			$this->controller = $e->getData()->controller;
 			$this->action = $e->getData()->action;
 			return $this->render();
@@ -157,26 +157,3 @@ abstract class Application
 		}
 	}
 }
-
-class ApplicationException extends \Exception
-{
-	/*function __construct( $message = '', $code = 0, Exception $previous = null )
-	{
-		parent::__construct( $message, $code, $previous );
-	}*/
-	
-	protected $data;
-
-	function __construct( $data )
-	{
-		$this->data = $data;
-		parent::__construct();
-	}
-	
-	public function getData()
-	{
-		return $this->data;
-	}
-}
-
-?>

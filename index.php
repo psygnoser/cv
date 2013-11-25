@@ -30,7 +30,8 @@ class MyApplication extends core\Application
 	
 	protected function postInit()
 	{
-		$loggedIn = $this->getHelper('login')->isLogged();
+		# TODO: Should be handled by a yet-to-be-made ACL
+        $loggedIn = $this->getHelper('login')->isLogged();
 		if ( !$loggedIn && $this->controller == 'index' && $this->action == 'index' ) { 
 			$this->controller = 'index';
 			$this->action = 'intro';

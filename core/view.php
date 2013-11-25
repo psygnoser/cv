@@ -20,7 +20,7 @@ class View
 	
 	public function sub( $path, array $params )
 	{
-		return new ViewSub( $path, $params );
+		return new view\Sub( $path, $params );
 	}
 	
 	public function renderView( $path )
@@ -63,7 +63,7 @@ class View
 	
 	public function json( array $json, $options = null )
 	{
-		ViewHeader::set( ViewHeader::JSON, ViewHeader::CHARSET_UTF8 );
+		view\Header::set( view\Header::JSON, view\Header::CHARSET_UTF8 );
 		return json_encode( $json, $options );
 	}
 
@@ -78,49 +78,3 @@ class View
 			require $path;
 	}
 }
-
-class ViewSub
-{
-	private $app;
-	private $view;
-	
-	function __construct( $path, array $params )
-	{
-		$this->app = \CV\core\Application::getInstance();
-		$this->view = new Obj( $params );
-		$view = $this->app->getController()->getView() ? $this->app->getController()->getView() : $this->app->controller();
-		$fullPath = \CV\core\Application::getPath(). 'app/views/'. $view. '/templates/'. strtolower( $path ). '.phtml';
-		if ( \file_exists( $fullPath ) )	
-			$this->_setSub( $fullPath );
-	}
-	
-	public function sub( $path, array $params )
-	{
-		$class = __CLASS__;
-		return new $class( $path, $params );
-	}
-	
-	protected function _setSub( $path )
-	{
-		require $path;
-	}
-}
-
-abstract class ViewHeader
-{
-	const HTML = 'text/html';
-	const XML = 'text/xml';
-	const JSON = 'application/json';
-	const BINARY = 'application/octet-stream';
-	const PLAIN = 'text/plain';
-	
-	const CHARSET_ISO_8859_1 = 'iso-8859-1';
-	const CHARSET_UTF8 = 'UTF-8';
-	
-	static function set( $type, $charset = null )
-	{
-		\header( 'Content-Type: '. $type. ( $charset ? '; charset='. $charset : '' ) );
-	}
-}
-
-?>

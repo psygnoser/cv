@@ -41,7 +41,6 @@ class Controller
 		if ( !isset( $this->_views[ $this->controller ] ) )
 			$this->_views[ $this->controller ] = $view;
 		if ( is_callable( [ $view, $this->action. 'Action' ] ) ) {
-			//if ( !$this->actionOverride )
 			$view->{$this->action. 'Action'}();
 			$view->set();
 			$this->layout =& $view->layout();
@@ -53,8 +52,6 @@ class Controller
 	{
 		$this->actionOverride = $action;
 		$this->app->params()->sys->action = $action;
-		//if ( $this->built )
-		//return $this->_setView();
 	}
 	
 	public function setView( $controller )
@@ -112,7 +109,7 @@ class Controller
 		$data = new Obj;
 		$data->controller = $controller;
 		$data->action = $action;
-		throw new \CV\core\ApplicationException( $data );
+		throw new application\AppException( $data );
 	}
 
 	public function preDispatch(){}

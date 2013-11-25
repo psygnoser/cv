@@ -8,6 +8,7 @@ class Validator
 	private $validators = null;
 	private $msg = [];
     private $errorGrps = [];
+    private $single = false;
 	
     private $method;
 	const POST = '_POST';
@@ -27,6 +28,8 @@ class Validator
 		$testFunc = isset( $args[1] ) ? $args[1] : '';
 		$errorMsg = isset( $args[2] ) ? $args[2] : ''; 
         $errorGrp = isset( $args[3] ) ? $args[3] : null;
+        $ref = isset( $args[4] ) ? $args[4] : null;
+        
         if ( $errorGrp ) {
             if ( !isset( $this->errorGrps[$errorGrp] ) )
                 $this->errorGrps[$errorGrp] = [];
@@ -37,12 +40,14 @@ class Validator
             $value = $_REQUEST[$name];
         else if ( isset( $GLOBALS[$this->method][$name] ) )
             $value = $GLOBALS[$this->method][$name];
-
+        if ($this->single && !$value) return;
+        
         $vldNode =& $this->stack->$name;
-		$vldNode[] = new validateFormStack( array ( ### CHECK THIS CODE !!!
-			'value'=>( $defVal != $GLOBALS[ $this->method ][ $name ] ? $value : '' ),
+		$vldNode[] = new validator\FormStack( array ( ### CHECK THIS CODE !!!
+			'value'=>( $defVal != $value ? $value : '' ),
 			'defVal'=>$defVal, 
 			'testFunc'=>$testFunc, 
+            'ref'=>$ref,
 			'errorMsg'=>$errorMsg,
             'errorGrp'=>$errorGrp,
 			'error'=>false 
@@ -59,6 +64,11 @@ class Validator
 		return $this->stack;
     }
     
+    public function singleField() 
+	{
+		$this->single = true;
+    }
+    
     public function setValidators( $validators )
     {
         $vldObj = new $validators($this);
@@ -67,18 +77,16 @@ class Validator
     }
     
     public function exe()
-	{
+	{              // print_r($this->stack);
 		foreach ( $this->stack as $name => $paramsAll ) {
             foreach ( $paramsAll as $params ) {
                 if ( !$params->testFunc )
                     continue;
-
                 if ( $params->testFunc == 'notEmpty' 
                 && $params->value && $params->value != $params->defVal ) {
                     $this->updateGrp($params->errorGrp, $name);
                     continue;
                 }
-
                 if ( $params->value 
                 && is_string( $params->value ) && isset( $this->validators->{ $params->testFunc } ) 
                 && preg_match( $this->validators->{ $params->testFunc }, $params->value ) ) {
@@ -97,20 +105,17 @@ class Validator
                         $this->updateGrp($params->errorGrp, $name); 
                         continue;
                     }
-                }
-                
-                if ( $params->errorGrp 
+                }                
+                if ( !$this->single && $params->errorGrp 
                 && isset( $this->errorGrps[ $params->errorGrp-1 ] ) 
                 && !empty( $this->errorGrps[ $params->errorGrp-1 ] ) )
-                    continue;
-                
+                    continue;                
                 $params->error = true;
                 if ( !isset( $this->msg[$name] ) )
-                    $this->msg[$name] = [];
-      
+                    $this->msg[$name] = [];    
                 $this->msg[$name][] = [ $params->errorMsg ];	
             }
-		}
+		}//print_r($this->errorGrps);print_r($this->msg);exit;
 	}
 	
 	public function reset()
@@ -131,24 +136,3 @@ class Validator
             unset( $this->errorGrps[ $errorGrp ][ $name ] );
 	}
 }
-
-class validateFormStack
-{
-	private $stack;
-	
-	function __construct( array $stack )
-	{
-		$this->stack = (object) $stack;
-	}
-	
-	function __get( $name ) 
-	{
-		if ( $name == 'value' ) {
-			$node = $this->stack;
-			return $node->value;
-		}
-		return $this->stack->$name;
-	}
-}
-
-?>

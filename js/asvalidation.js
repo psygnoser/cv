@@ -5,7 +5,7 @@
  * 
  * @author Tilen Leban <psygnoser@gmail.com>
  * @since 201311241613
- * @version 1.6.7
+ * @version 1.6.8
  * @inherits jQuery >= 1.4.2
  *
  * @param string	form			Targeted form-element jQuery-type selector
@@ -59,7 +59,7 @@ function AS_Validation( form, url, urlAction, urlVld, urlVldField, initPreStack,
 		var ref = $(this.f+  ' #'+ id).attr( 'ref' );
 		if ( ref )
 			data[ ref ] = $(this.f+  ' #'+ ref ).val();
-
+        //console.log(data);
 		$.post( t.url+ '/'+ t.rt, data, function(resp) {
 			if ( t.submitted )
 				return;
@@ -74,7 +74,9 @@ function AS_Validation( form, url, urlAction, urlVld, urlVldField, initPreStack,
                 iLength++;
             }
 			if ( resp.error != 0 )
-				t.alerterSingle( resp );
+				t.alerterSingle( resp.message );
+            else
+                t.clear();
 		});
 	}
 
@@ -118,8 +120,8 @@ function AS_Validation( form, url, urlAction, urlVld, urlVldField, initPreStack,
 	}
 
 	this.onError = function( t, resp )
-	{ 
-		for ( var key in resp.message ) {
+	{ //console.log(resp);
+		for ( var key in resp ) { //console.log(t.f+   ' #' + key);
 			$(t.f+   ' #' + key)
 				.focus()
 				.select();
@@ -171,7 +173,8 @@ function AS_Validation( form, url, urlAction, urlVld, urlVldField, initPreStack,
 		this.eachStackSingle.push( this.vldSingle.each );
 		this.postStackSingle.push( this.vldSingle.post );
 		this.alerterSingle = this.vldSingle.validate;
-
+        this.clear = this.vldSingle.clear;
+        
 		return this.vldSingle;
 	}
 
@@ -252,7 +255,7 @@ function AS_Validation( form, url, urlAction, urlVld, urlVldField, initPreStack,
 		});
 
 		$(this.f).on( 'submit', function(e) {
-
+this.preStack
 			t.submitted = true;
 			t.runPreStack( t ,e );
 
@@ -335,49 +338,12 @@ function AS_Validation( form, url, urlAction, urlVld, urlVldField, initPreStack,
 function AS_Alerter_Default( form, t, params )
 {
 	this.f = form;
-
 	this.pre = function( t ){}
-
 	this.each = function( f, id ){}
-
 	this.validate = function( errors )
 	{
 		alert(errors);
 	}
-
-	this.post = function(){}
-}
-
-/**
- * Default alerter - Whole form
- */
-function AS_Alerter_Label( form, t, params )
-{
-	this.f = form;
-
-	this.pre = function( t )
-	{
-		$(t.f+ ' ul.errors').remove();
-	}
-
-	this.each = function( t, id ){}
-
-	this.validate = function( errors )
-	{
-		for ( id in errors ) {
-			var o = '<ul id="errors-' + id + '" class="errors">';
-			for ( errorKey in errors[id] ) {
-
-				o += '<li>' + errors[id][errorKey] + '</li>';
-			}
-			o += '</ul>';
-            if ( params.output == 'append' )
-                $(this.f+  ' #' + id).parent().append( o );
-            else
-                $(this.f+  ' #' + id).parent().prepend( o );
-		}
-	}
-
 	this.post = function(){}
 }
 
@@ -387,31 +353,62 @@ function AS_Alerter_Label( form, t, params )
 function AS_Alerter_LabelSingle( form, t, params )
 {
 	this.f = form;
-
 	this.pre = function( t ){
         $(t.f).find('.errors').remove();
     }
-
-	this.each = function( t, id ){
-		//$(t.f+  ' #' + id).parent().find('.errors').remove();
-	}
-
+	this.each = function( t, id ){}
 	this.validate = function( errors )
 	{
-		for ( id in errors ) {
+        var eClass = 'ui-state-error';
+        for ( id in errors ) { 
 			var o = '<ul id="errors-' + id + '" class="errors">';
 			for ( errorKey in errors[id] ) {
 
 				o += '<li>' + errors[id][errorKey] + '</li>';
 			}
 			o += '</ul>';
+            $(t.f).find('input[id='+id+']').addClass(eClass);
             if ( params.output == 'append' )
                 $(this.f+  ' #' + id).parent().append( o );
             else
                 $(this.f+  ' #' + id).parent().prepend( o );
 		}
 	}
+	this.post = function(){}
+    this.clear = function()
+    {
+        $(t.f).find('input').removeClass('ui-state-error');
+    }
+}
 
+function AS_Alerter_Label( form, t, params )
+{
+	this.f = form;
+	this.pre = function( t ){//console.log($(t.f).find('.errors-'+$(t.f).attr('id')));
+        $(t.f).find('.errors').remove();
+        //$(t.f).find('input').addClass('ui-corner-all ui-state-default');
+    }
+	this.each = function( t, id ){
+		//$(t.f+  ' #' + id).parent().find('.errors').remove();
+	}
+	this.validate = function( errors )
+	{
+        var eClass = 'ui-state-error';
+		$(t.f).find('input').removeClass(eClass);
+        for ( id in errors ) { //console.log(errors);
+			var o = '<ul id="errors-' + id + '" class="errors">';
+			for ( errorKey in errors[id] ) {
+
+				o += '<li>' + errors[id][errorKey] + '</li>';
+			}
+			o += '</ul>';
+            $(t.f).find('input[id='+id+']').addClass(eClass);
+            if ( params.output == 'append' )
+                $(this.f+  ' #' + id).parent().append( o );
+            else
+                $(this.f+  ' #' + id).parent().prepend( o );
+		}
+	}
 	this.post = function(){}
 }
 

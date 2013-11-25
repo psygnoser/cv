@@ -19,6 +19,22 @@ class Validators
 			return true;
 		return false;
 	}
+    
+    public function inRange( $value, $param )
+	{
+        $bff = explode('-', $param);
+		if ( $value && isset($bff[0]) && isset($bff[1]) && $value >= $bff[0] && $value <= $bff[1] )
+			return true;
+		return false;
+	}
+    
+    public function lenghtRange( $value, $param )
+	{
+        $bff = explode('-', $param);
+		if ( $value && isset($bff[0]) && isset($bff[1]) && strlen($value) >= $bff[0] && strlen($value) <= $bff[1] )
+			return true;
+		return false;
+	}
 }
 
 ?>

@@ -10,8 +10,18 @@ class Register extends \CV\core\Controller
     
     public function validateAction() 
 	{
-        $form = new \CV\app\views\register\forms\Register(); ### Change app namespace
+        $form = new \CV\app\views\register\forms\Register();
         $response = $form->validate( '\CV\app\classes\Validators' );
+        print $this->view()->json( $response );
+
+        $this->disableView();
+        $this->disableLayout();
+    }
+    
+    public function fieldAction() 
+	{
+        $form = new \CV\app\views\register\forms\Register(); 
+        $response = $form->validate( '\CV\app\classes\Validators', true );
         print $this->view()->json( $response );
 
         $this->disableView();

@@ -55,10 +55,10 @@ fieldset legend {overflow:auto; background:#283346; -webkit-border-radius: 5px;-
 
 dl { overflow: hidden; width: 790px; margin:0px;  }
 dl:hover { background: #e4e4e4; }
-dl dt { width:220px; float:left; text-align: right;  font-weight: bold; padding:10px 0px; }
+dl dt { width:240px; float:left; text-align: right;  font-weight: bold; padding:10px 0px 0px; }
 
 dl dt .legend { float:right; }
-dl dd { width:500px; border-left:1px solid black;float:left;  padding:10px 0px 10px 20px;}
+dl dd { width:500px; border-left:1px solid black;float:left;  padding:10px 0px 10px 20px; margin-left: 20px}
 
 .bull { display:none; cursor: pointer; float:left; width: 16px; height:16px; text-align:center; margin:0px 10px; background: url('../images/updown_16s.png'); }
 .bullw { display:block; visibility: hidden; background: url('../images/updown_16si.png'); }
@@ -71,9 +71,11 @@ legend div.edit { float:right; margin-right: 10px; }
 #accordion span.edit { position: absolute; z-index: 3; margin:8px 0px 0px 30px; font-weight: bold; }
 #accordion {overflow: auto;    min-height: 150px;}
 
+/*input {}*/
+
 #accordion .edit input { height:12px !important; border: 0px }
 #accordion .edit textarea { border: 0px }
-#accordion dt .edit input { width:180px !important }
+#accordion dt .edit input { width:180px !important; text-align: right }
 #accordion #tabs .ui-state-default.ui-state-active .edit { position:absolute; margin: 6px 0 0 14px; display:block}
 #accordion #tabs .ui-state-default .edit { display:none}
 #accordion #tabs .ui-state-active .edit { margin:6px 0 0 13px;}
@@ -99,8 +101,12 @@ fieldset > .remove {position: absolute; display: none; margin:-25px 0 0 811px; w
 #top > div > div a { text-decoration: none; color: #fff; /*padding: 20px 5px 0; display: block; float:left;*/ padding: 0 5px; }
 
 #top form#login { margin:0px; padding: 0px 0 2px; }
-#top form#login input { width:150px; height:19px; float:left; margin-right: 5px; border:0px solid white; background: #f1f1f1; }
-#top form#login button { border:0px solid white;  background: #283346; overflow: hidden; padding:2px 0px;}
+/*#top form#login*/ 
+input[type=text],
+input[type=password] { height:17px; float:left; margin-right: 5px; border:0px solid white; background: #fff !important; font-size: 11px !important; color:#000 !important }
+#top form#login input[type=text], 
+#top form#login input[type=password] { width:150px; }
+#top form#login button { border:0px solid white;  background: #283346; overflow: hidden; padding:1px 0px;}
 #top form#login button span {color:#fff;padding:0px 5px; font-size: 11px; }
 #top form#login div#pasw { position: absolute; color: #000; margin: 3px 0 0 158px; }
 
@@ -114,6 +120,10 @@ fieldset > .remove {position: absolute; display: none; margin:-25px 0 0 811px; w
 
 .controls.accord { background: none ;margin: 5px 0px 0px 840px;position: absolute;z-index: 1; display: none;}
 
-form#register .errors, form#register input { float: left}
+form#register ul.errors, form#register input { float: left}
+
+form#register ul.errors {width:270px; position: absolute;margin: 3px 0 0 145px}
+
+form#register  input.errors { border:1px solid red;}
 
 span.ui-icon-close {float: right; display: none;}

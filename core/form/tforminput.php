@@ -53,7 +53,13 @@ trait tFormInput
     
     public function validate($func, $msg, $grp = null) 
     {
-        $this->_validate[] = [$func, $msg, $grp];
+        $ref = null;
+        if ( strpos( $func, ':' ) !== false ) {
+            $tmp = explode(':', $func );
+            if ( $tmp[0] == 'sameAs' )
+                $ref = $tmp[1];
+        }
+        $this->_validate[] = [$func, $msg, $grp, $ref];
         return $this;
     }
     
