@@ -2,6 +2,8 @@
 
 namespace CV\app\controllers;
 
+use CV\core\Router;
+
 class Index extends \CV\core\Controller
 {
 	public function preDispatch() 
@@ -12,9 +14,14 @@ class Index extends \CV\core\Controller
 			$this->setAction( 'denied' );*/
 	}
 
-	public function indexAction()
+    /**
+     * @Route("path":"killer/is/here/:b1/:c1", "params": {"b1": "foo", "c1": "boo"})
+     * @Template("tmp")
+     */
+    public function indexAction()
 	{
-
+        print "SDFSDFSDFSDFSDFSDFFSDF";
+        var_dump($this->app->params(), Router::getRoutes());
 	}
 	
 	public function positionAction()
@@ -33,7 +40,7 @@ class Index extends \CV\core\Controller
 			->saveField( $_POST['id'], $this->get->name, $value );
 		
 		print $_POST['value'];
-		
+
 		$this->disableView();
 		$this->disableLayout();
 	}

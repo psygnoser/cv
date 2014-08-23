@@ -2,7 +2,9 @@
 
 namespace CV\app\views\index;
 
-class Index extends \CV\core\View
+use CV\core\View;
+
+class Index extends View
 {
 	public function indexAction()
 	{
