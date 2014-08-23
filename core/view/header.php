@@ -1,8 +1,11 @@
 <?php
 
 namespace CV\core\view;
-use CV\core\Data_Object as Obj;
 
+/**
+ * Class Header
+ * @package CV\core\view
+ */
 abstract class Header
 {
 	const HTML = 'text/html';
@@ -13,8 +16,12 @@ abstract class Header
 	
 	const CHARSET_ISO_8859_1 = 'iso-8859-1';
 	const CHARSET_UTF8 = 'UTF-8';
-	
-	static function set( $type, $charset = null )
+
+    /**
+     * @param $type
+     * @param null $charset
+     */
+    static function set( $type, $charset = null )
 	{
 		\header( 'Content-Type: '. $type. ( $charset ? '; charset='. $charset : '' ) );
 	}

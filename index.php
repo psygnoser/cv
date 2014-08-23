@@ -46,4 +46,3 @@ class MyApplication extends core\Application
 $cv = new MyApplication;
 print $cv->render();
 
-?>

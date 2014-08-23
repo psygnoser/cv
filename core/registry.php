@@ -3,14 +3,28 @@
 namespace CV\core;
 use \CV\core\Data_Object as Obj;
 
+/**
+ * Class Registry
+ * @package CV\core
+ */
 abstract class Registry
 {
-	protected static $stack;
-	
-	public static function set( $name, $data, $namespace = null )
+    /**
+     * @var
+     */
+    protected static $stack;
+
+    /**
+     * @param $name
+     * @param $data
+     * @param null $namespace
+     * @return null
+     */
+    public static function set( $name, $data, $namespace = null )
 	{
-		if ( !self::$stack )
-			self::$stack = new Obj;
+		if ( !self::$stack ) {
+            self::$stack = new Obj;
+        }
 		if ( $namespace ) {
 			self::$stack->$namespace->$name = $data;
 			return self::$stack->$namespace->$name;
@@ -19,11 +33,17 @@ abstract class Registry
 			return self::$stack->$name;
 		}
 	}
-	
-	public static function get( $name, $namespace = null )
+
+    /**
+     * @param $name
+     * @param null $namespace
+     * @return null
+     */
+    public static function get( $name, $namespace = null )
 	{
-		if ( !self::$stack )
-			self::$stack = new Obj;
+        if ( !self::$stack ) {
+            self::$stack = new Obj;
+        }
 		if ( $namespace && isset( self::$stack->$namespace ) && isset( self::$stack->$namespace->$name ) ) {
 			return self::$stack->$namespace->$name;
 		} else if ( isset( self::$stack->$name ) ) {
@@ -31,11 +51,16 @@ abstract class Registry
 		}
 		return null;
 	}
-	
-	public static function kill( $name, $namespace = null )
+
+    /**
+     * @param $name
+     * @param null $namespace
+     */
+    public static function kill( $name, $namespace = null )
 	{
-		if ( !self::$stack )
-			self::$stack = new Obj;
+        if ( !self::$stack ) {
+            self::$stack = new Obj;
+        }
 		if ( $namespace && isset( self::$stack->$namespace ) && isset( self::$stack->$namespace->$name ) ) {
 			unset( self::$stack->$namespace->$name );
 		} else if ( isset( self::$stack->$name ) ) {
@@ -43,5 +68,3 @@ abstract class Registry
 		}
 	}
 }
-
-?>

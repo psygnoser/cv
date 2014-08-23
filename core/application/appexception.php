@@ -2,18 +2,32 @@
 
 namespace CV\core\application;
 
+/**
+ * Class AppException
+ * @package CV\core\application
+ */
 class AppException extends \Exception
-{	
-	protected $data;
+{
+    /**
+     * @var string
+     */
+    protected $data;
 
-	function __construct( $data )
+    /**
+     * @param string $data
+     */
+    function __construct( $data )
 	{
 		$this->data = $data;
 		parent::__construct();
 	}
-	
-	public function getData()
+
+    /**
+     * @return string
+     */
+    public function getData()
 	{
 		return $this->data;
 	}
 }
+

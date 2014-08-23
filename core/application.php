@@ -1,26 +1,74 @@
 <?php
 
 namespace CV\core;
-use \CV\core\Data_Object as Obj;
 
 require_once 'loader.php';
 
+/**
+ * Class Application
+ * @package CV\core
+ */
 abstract class Application
 {
-	protected static $app;
-	protected static $path;
-	
-	protected $return;
-	protected $controller;
-	protected $action;
-	protected $params;
-	protected $output;
-	protected $layout;
-	protected $controllerObj;
-	protected $layoutOverride = '';
-	protected $router;
-	
-	function __construct()
+    /**
+     * @var Application
+     */
+    protected static $app;
+
+    /**
+     * @var string
+     */
+    protected static $path;
+
+    /**
+     * @var
+     */
+    protected $return;
+
+    /**
+     * @var mixed
+     */
+    protected $controller;
+
+    /**
+     * @var mixed
+     */
+    protected $action;
+
+    /**
+     * @var mixed
+     */
+    protected $params;
+
+    /**
+     * @var
+     */
+    protected $output;
+
+    /**
+     * @var Layout
+     */
+    protected $layout;
+
+    /**
+     * @var
+     */
+    protected $controllerObj;
+
+    /**
+     * @var string
+     */
+    protected $layoutOverride = '';
+
+    /**
+     * @var Router
+     */
+    protected $router;
+
+    /**
+     *
+     */
+    function __construct()
 	{
 		date_default_timezone_set(\CV\TIME_ZONE);
 		$this->preInit();
@@ -36,70 +84,74 @@ abstract class Application
 		$this->params = $this->router->get('params');
 		$this->postInit();
 	}
-	
-	protected function navigator()
+
+    /**
+     * @return mixed
+     * @throws \Exception
+     */
+    protected function navigator()
 	{
 		$cn = '\CV\app\controllers\\'. $this->controller;
-		if ( !class_exists( $cn ))
-			throw new \Exception('Invalid controller: '. $cn);
+		if ( !class_exists( $cn )) {
+            throw new \Exception('Invalid controller: '. $cn);
+        }
+
 		$this->controllerObj = new $cn; //var_dump($action);
-		if ( !method_exists( $this->controllerObj, $this->action. 'Action' ) )
-			throw new \Exception('Invalid action');
+		if ( !method_exists( $this->controllerObj, $this->action. 'Action' ) ) {
+            throw new \Exception('Invalid action');
+        }
+
 		$this->controllerObj->preDispatch();
 		$return = $this->controllerObj->{$this->action. 'Action'}();
-        //@([a-zA-Z]+)\('([\w\/\.\,]+)'\)
-        //@([a-zA-Z]+)\(([^)]+)\)
-//        var_dump('sdf');exit;
-        /*$annotations = (new \ReflectionMethod($this->controllerObj, $this->action. 'Action'))->getDocComment();
-        preg_match_all("/@([a-zA-Z]+)\(([^)]+)\)/", $annotations, $annotationsAll);
-        $annotationsMap = [];
-        for ($i = 0; $i < sizeof($annotationsAll) - 1; $i++) {
-            $annotationsMap[$annotationsAll[1][$i]] = $annotationsAll[2][$i];
-        }
-        //var_dump($annotationsAll, $annotationsMap);exit;
-        if (isset($annotationsMap['Route']) && $annotationsMap['Route']) {
-            $annotationParams = $annotationsMap['Route'];
-            $annotationParams = '{'. $annotationParams. '}';
-            $annotationObj = json_decode($annotationParams);
-//            if (isset($annotationObj['params']) && $annotationObj['params']) {
-//                foreach ($annotationObj['params'] as $key => $param) {
-//                    $annotationObj['path']
-//                }
-//            }
-            //$this->controllerObj->setView($annotationParams);
-            var_dump($annotationParams, $annotationObj);exit;
-        }*/
-        //var_dump($annotations, $annotationsAll);exit;
 		$this->controllerObj->postDispatch();
+
 		return $return;
 	}
-	
-	public static function getInstance()
+
+    /**
+     * @return Application
+     */
+    public static function getInstance()
 	{
 		return self::$app;
 	}
-	
-	public static function getPath()
+
+    /**
+     * @return string
+     */
+    public static function getPath()
 	{
 		return self::$path;
 	}
-	
-	public function &getController()
+
+    /**
+     * @return mixed
+     */
+    public function &getController()
 	{
 		return $this->controllerObj;
 	}
-	
-	public function controller()
+
+    /**
+     * @return mixed
+     */
+    public function controller()
 	{
 		return $this->controller;
 	}
-	
-	public function action()
+
+    /**
+     * @return mixed
+     */
+    public function action()
 	{
 		return $this->action;
 	}
-	
-	public function params()
+
+    /**
+     * @return mixed
+     */
+    public function params()
 	{
 		return $this->params;
 	}
@@ -112,56 +164,81 @@ abstract class Application
         return $this->router;
     }
 
+    /**
+     * @return mixed
+     */
     protected function getContent()
 	{
 		return $this->output;
 	}
-	
-	public function getHelper( $name )
+
+    /**
+     * @param $name
+     * @return mixed
+     */
+    public function getHelper( $name )
 	{
 		$name = '\CV\app\helpers\\'. $name;
 		return new $name;
 	}
-	
-	public function setLayout( $override )
+
+    /**
+     * @param $override
+     */
+    public function setLayout( $override )
 	{
 		$this->layoutOverride = $override;	
 	}
-	
-	private function _setLayout()
+
+    /**
+     *
+     */
+    private function _setLayout()
 	{
-		$path = \CV\core\Application::getPath(). 'layouts/'. ( $this->layoutOverride ? $this->layoutOverride : \CV\LAYOUT ). '.phtml'; 
+		$path = \CV\core\Application::getPath(). 'layouts/'.
+            ( $this->layoutOverride ? $this->layoutOverride : \CV\LAYOUT ).
+            '.phtml';
 		if ( file_exists( $path ) ) {
 			require_once $path;
 		}
 	}
-	
-	protected function preInit()
-	{
-		
-	}
-	
-	protected function postInit()
-	{
-		
-	}
-	
-	protected function preRender()
-	{
-		
-	}
-	
-	protected function postRender()
-	{
-		
-	}
-	
-	/*protected function setRoute( $route, array $params )
-	{
-		Router::set( $route, $params );
-	}*/
 
-	public function render()
+    /**
+     *
+     */
+    protected function preInit()
+	{
+		
+	}
+
+    /**
+     *
+     */
+    protected function postInit()
+	{
+		
+	}
+
+    /**
+     *
+     */
+    protected function preRender()
+	{
+		
+	}
+
+    /**
+     *
+     */
+    protected function postRender()
+	{
+		
+	}
+
+    /**
+     * @return string
+     */
+    public function render()
 	{
 		$this->preRender();
 		try {
@@ -176,17 +253,23 @@ abstract class Application
 				$this->layout->$key = $value;
 			}
 			$return = '';
-			if ( !$this->controllerObj->isDisabledLayout() )
-				$this->_setLayout();
-			else
-				$return = $this->output;
+			if ( !$this->controllerObj->isDisabledLayout() ) {
+                $this->_setLayout();
+            } else {
+                $return = $this->output;
+            }
 			$this->postRender();
+
 			return $return;
+
 		} catch ( application\AppException $e ) {
 			$this->controller = $e->getData()->controller;
 			$this->action = $e->getData()->action;
+
 			return $this->render();
+
 		} catch ( \Exception $e ) {
+
 			return $e->getMessage();
 		}
 	}

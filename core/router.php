@@ -1,20 +1,54 @@
 <?php
 
 namespace CV\core;
-use CV\app\views\edit\Edit;
+
 use \CV\core\Data_Object as Obj;
 
+/**
+ * Class Router
+ * @package CV\core
+ */
 class Router
 {
-	protected static $routes = [];
-	protected $uri;
-	protected $paramsRaw;
-	protected $paramsIndex;
-	protected $params;
-	protected $controller;
-	protected $action;
-	
-	function __construct()
+    /**
+     * @var array
+     */
+    protected static $routes = [];
+
+    /**
+     * @var mixed
+     */
+    protected $uri;
+
+    /**
+     * @var array
+     */
+    protected $paramsRaw;
+
+    /**
+     * @var
+     */
+    protected $paramsIndex;
+
+    /**
+     * @var Data_Object
+     */
+    protected $params;
+
+    /**
+     * @var
+     */
+    protected $controller;
+
+    /**
+     * @var
+     */
+    protected $action;
+
+    /**
+     *
+     */
+    function __construct()
 	{
 		$this->uri = str_replace( \CV\PATH, '', $_SERVER['REQUEST_URI'] );
 		$this->paramsRaw = explode( '/', $this->uri );
@@ -32,21 +66,27 @@ class Router
 		$this->params->sys->{'controller'} = $this->controller;
 		$this->params->sys->{'action'} =  $this->action;
 	}
-	
-	protected function defaultRoute()
+
+    /**
+     *
+     */
+    protected function defaultRoute()
 	{
 		$this->paramsIndex = 2;
 		$this->controller = isset( $this->paramsRaw[0] ) && $this->paramsRaw[0] != '' ? $this->paramsRaw[0] : \CV\CONTROLLER;
 		$this->action = isset( $this->paramsRaw[1] ) && $this->paramsRaw[1] != '' ? $this->paramsRaw[1] : \CV\ACTION;
 	}
-	
-	protected function setRoute()
-	{ //var_dump(self::$routes);
+
+    /**
+     *
+     */
+    protected function setRoute()
+	{
 		if ( self::$routes )
-			foreach ( self::$routes as $name=>$route ) {
+			foreach ( self::$routes as $name => $route ) {
 				if ( \preg_match( '/'. str_replace( '/', '\/', $route['search'] ). '/', $this->uri ) ) {
 					$routeRaw = explode( '/', $route['pattern'] );
-					$inx = preg_match( "|{$route['search']}|", $this->uri, $uriValues );
+					//$inx = preg_match( "|{$route['search']}|", $this->uri, $uriValues );
 					$i = 1;
 					foreach( $routeRaw as $node ) {
 						if ( preg_match( '/:controller|:action/', $node, $matches ) ) {
@@ -59,8 +99,9 @@ class Router
 					}
 					$this->paramsIndex = sizeof($routeRaw);
 					foreach ( $route['params'] as $pKey=>$pVal ) {
-						$this->$pKey = $pVal;
+                        $this->$pKey = $pVal;
 					}
+
 					return;
 				}
 			}
@@ -75,13 +116,23 @@ class Router
         return self::$routes;
     }
 
+    /**
+     * @param $property
+     * @return mixed
+     */
     public function get( $property )
 	{
-		if ( isset($this->$property) )
-			return $this->$property;
+		if ( isset($this->$property) ) {
+            return $this->$property;
+        }
 	}
-	
-	public static function set( $name, $pattern, array $params )
+
+    /**
+     * @param $name
+     * @param $pattern
+     * @param array $params
+     */
+    public static function set( $name, $pattern, array $params )
 	{
 		$search = $pattern;
 		foreach( $params as $key=>$value ) {
@@ -91,24 +142,28 @@ class Router
 		self::$routes[$name] = [ 'pattern'=>$pattern, 'search'=>$search, 'params'=>$params ];
 	}
 
+    /**
+     *
+     */
     public function parseAnnotations()
     {
         $controllers = $this->getControllers();
-        //var_dump($controllers, 666);exit;
-        foreach ($controllers as $cName => $controller) { //var_dump($controller);exit;
+
+        foreach ($controllers as $cName => $controller) {
             foreach ($controller as $action) {
                 $reflectionMethod = new \ReflectionMethod($action->class, $action->name);
-                $reflectionClass = new \ReflectionClass('CV\app\controllers\\'. ucfirst($cName));
+                //$reflectionClass = new \ReflectionClass('CV\app\controllers\\'. ucfirst($cName));
                 $annotations = $reflectionMethod->getDocComment();
+                $fns = basename($reflectionMethod->getFileName());
+
                 preg_match_all("/@([a-zA-Z]+)\(([^)]+)\)/", $annotations, $annotationsAll);
                 $annotationsMap = [];
                 if (!empty($annotationsAll)) {
-                   //continue;
+                   continue;
                 }
                 for ($i = 0; $i < sizeof($annotationsAll) - 1 && isset($annotationsAll[1][$i]); $i++) {
                     $annotationsMap[$annotationsAll[1][$i]] = $annotationsAll[2][$i];
                 }
-                //var_dump($annotationsAll, $annotationsMap);//exit;
                 if (isset($annotationsMap['Route']) && $annotationsMap['Route']) {
                     $annotationParams = $annotationsMap['Route'];
                     $annotationParams = '{'. $annotationParams. '}';
@@ -119,43 +174,40 @@ class Router
                         }
                     }*/
                     //$this->controllerObj->setView($annotationParams);
-                    $ac = str_replace('Action', '', $action->name);var_dump($annotationObj, $cName,$ac, $reflectionClass->getParentClass());//exit;
-                    self::set($ac, $annotationObj->path, [ 'controller'=>$cName, 'action'=>$ac ] );
-                    //var_dump($annotationParams, $annotationObj, self::$routes);exit;
+                    $ac = str_replace('Action', '', $action->name);
+                    if ($fns == $cName. '.php') {
+                        self::set($ac, $annotationObj->path, [ 'controller'=>$cName, 'action'=>$ac ] );
+                    }
                 }
-//                var_dump('ACTION');
             }
-//            var_dump('CONTROLLER');
         }
     }
 
-   public function getControllers()
-   {
-       $controllers = [];
-       //var_dump(get_declared_classes());
-       //var_dump(scandir(Application::getPath(). '/app/controllers/'));
-       $classes = scandir(Application::getPath(). '/app/controllers/');
-       $return = [];
-       foreach ($classes as $class) {
-           if ($class == '.' || $class == '..') {
+    /**
+     * @return array
+     */
+    public function getControllers()
+    {
+        $controllers = [];
+        $classes = scandir(Application::getPath(). '/app/controllers/');
+        foreach ($classes as $class) {
+            if ($class == '.' || $class == '..') {
                continue;
-           }//
-           $class = explode('.', $class);
-           $class = $class[0];
-           $classMethods = (new \ReflectionClass('CV\app\controllers\\' .ucfirst($class)))->getMethods();
+            }//
+            $class = explode('.', $class);
+            $class = $class[0];
+            $classMethods = (new \ReflectionClass('CV\app\controllers\\' .ucfirst($class)))->getMethods();
 
-           $actionMethods = [];
-           foreach ($classMethods as $method) {
-               if (strstr($method, 'Action') !== false) {
-                   $actionMethods[] = $method;
-               }
-           }
-           //var_dump($actionMethods);exit;
-           //$annotations = (new \ReflectionMethod($this->controller, $this->action. 'Action'))->getDocComment(
-           $controllers[$class] = $actionMethods;
-       }
-       return $controllers;
-   }
+            $actionMethods = [];
+            foreach ($classMethods as $method) {
+                if (strstr($method, 'Action') !== false) {
+                    $actionMethods[] = $method;
+                }
+            }
+            $controllers[$class] = $actionMethods;
+        }
+
+        return $controllers;
+    }
 }
 
-?>

@@ -2,38 +2,72 @@
 
 namespace CV\core;
 
+/**
+ * Class DB
+ * @package CV\core
+ */
 class DB
 {
-	protected $db;
-	
-	function __construct( $host, $user, $pasw, $name )
+    /**
+     * @var \mysqli
+     */
+    protected $db;
+
+    /**
+     * @param $host
+     * @param $user
+     * @param $pasw
+     * @param $name
+     */
+    function __construct( $host, $user, $pasw, $name )
 	{
 		$this->db = new \mysqli( $host, $user, $pasw, $name );
 		$this->db->set_charset('utf8');
 	}
-	
-	public function getDb()
+
+    /**
+     * @return \mysqli
+     */
+    public function getDb()
 	{
 		return $this->db;
 	}
-	
-	protected function bind( $query, array $params )
+
+    /**
+     * @param $query
+     * @param array $params
+     * @return mixed
+     */
+    protected function bind( $query, array $params )
 	{
 		foreach ( $params as $key=>$value ) {
 			$query = str_replace( ':'. $key, $this->db->real_escape_string($value), $query );
 		}
+
 		return $query;
 	}
-	
-	public function query( $query, $params = null )
+
+    /**
+     * @param $query
+     * @param null $params
+     * @return bool|\mysqli_result
+     * @throws \Exception
+     */
+    public function query( $query, $params = null )
 	{
 		$result = $this->db->query( $params ? $this->bind( $query, $params ) : $query );
 		if ( !$result )
 			throw new \Exception( $this->db->errno.', '.$this->db->error );
+
 		return $result;
 	}
-	
-	public function fetch( $query, $params = null )
+
+    /**
+     * @param $query
+     * @param null $params
+     * @return array
+     */
+    public function fetch( $query, $params = null )
 	{
 		$result = $this->query( $query, $params );
 		$row = [];
@@ -41,25 +75,33 @@ class DB
 		while ( $row = $result->fetch_assoc() ) {
 			$assoc[] = (object) $row;
 		}
+
 		return $assoc;
 	}
-		
-	public function start()
+
+    /**
+     *
+     */
+    public function start()
 	{
 		$this->db->autocommit(false);
 	}
-	
-	public function commit()
+
+    /**
+     *
+     */
+    public function commit()
 	{
 		$this->db->commit();
 		$this->db->autocommit(true);
 	}
-	
-	public function rollback()
+
+    /**
+     *
+     */
+    public function rollback()
 	{
 		$this->db->rollback();
 		$this->db->autocommit(true);
 	}
 }
-
-?>

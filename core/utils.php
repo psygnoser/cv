@@ -1,11 +1,12 @@
 <?php
 
 namespace CV\core;
-use Data_Object as Obj;
 
+/**
+ * Class Utils
+ * @package CV\core
+ */
 abstract class Utils
 {
 	
 }
-
-?>

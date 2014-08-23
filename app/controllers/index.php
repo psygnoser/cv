@@ -16,7 +16,7 @@ class Index extends \CV\core\Controller
 
     /**
      * @Route("path":"killer/is/here/:b1/:c1", "params": {"b1": "foo", "c1": "boo"})
-     * @Template("tmp")
+     * Templdate("tmp")
      */
     public function indexAction()
 	{

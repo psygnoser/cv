@@ -1,38 +1,69 @@
 <?php
 
 namespace CV\core\model;
-use \CV\core\Data_Object as Obj;
 
+/**
+ * Class Insert
+ * @package CV\core\model
+ */
 class Insert
 {
-	protected $db;
-	protected $stack;
-	protected $model;
-	
-	function __construct( \CV\core\Model $model )
+    /**
+     * @var \CV\core\DB
+     */
+    protected $db;
+
+    /**
+     * @var array
+     */
+    protected $stack;
+    /**
+     * @var \CV\core\Model
+     */
+    protected $model;
+
+    /**
+     * @param \CV\core\Model $model
+     */
+    function __construct( \CV\core\Model $model )
 	{
 		$this->stack = [];
 		$this->db =& $model->db();
 		$this->model =& $model;
 		$this->db->start();
 	}
-	
-	public function __set( $key, $value )
+
+    /**
+     * @param $key
+     * @param $value
+     */
+    public function __set( $key, $value )
 	{
-		if ( !isset( $this->stack[$key] ) )
-			$this->stack[$key] = [];
+		if ( !isset( $this->stack[$key] ) ) {
+            $this->stack[$key] = [];
+        }
 		$this->stack[$key][] = $value;
 	}
-    
+
+    /**
+     * @param $key
+     * @param $value
+     * @return $this
+     */
     public function __call( $key, $value )
 	{
-		if ( !isset( $this->stack[$key] ) )
-			$this->stack[$key] = [];
+		if ( !isset( $this->stack[$key] ) ) {
+            $this->stack[$key] = [];
+        }
 		$this->stack[$key][] = $value;
+
         return $this;
 	}
-	
-	public function save()
+
+    /**
+     *
+     */
+    public function save()
 	{
 		$row = '';
 		$j = 1;
@@ -44,13 +75,18 @@ class Insert
 			$j++;
 		}
 		$query =  "INSERT INTO {$this->model->table()} SET $row";
+
 		$this->db->query( $query );
 		$this->db->commit();
 	}
-	
-	public function id()
+
+    /**
+     * @return mixed
+     */
+    public function id()
 	{
 		$result = $this->db->fetch( 'SELECT LAST_INSERT_ID() as id' );
+
 		return $result[0]->id;
 	}
 }

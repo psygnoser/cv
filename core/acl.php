@@ -1,11 +1,13 @@
 <?php
 
 namespace CV\core;
-use Data_Object as Obj;
 
+/**
+ * Class ACL
+ * @package CV\core
+ */
 class ACL
 {
 	
 }
 
-?>

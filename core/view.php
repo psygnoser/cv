@@ -3,78 +3,142 @@
 namespace CV\core;
 use CV\core\Data_Object as Obj;
 
+/**
+ * Class View
+ * @package CV\core
+ */
 class View
 {
-	protected $app;
-	protected $view;
-	protected $layout;
-	protected $get;
-	
-	function __construct()
+    /**
+     * @var
+     */
+    protected $app;
+
+    /**
+     * @var
+     */
+    protected $view;
+
+    /**
+     * @var
+     */
+    protected $layout;
+
+    /**
+     * @var
+     */
+    protected $get;
+
+    /**
+     *
+     */
+    function __construct()
 	{
 		$this->app = \CV\core\Application::getInstance();
 		$this->view = new Obj;
 		$this->layout = new Obj;
 		$this->get =& $this->app->params()->get;
 	}
-	
-	public function sub( $path, array $params )
+
+    /**
+     * @param $path
+     * @param array $params
+     * @return view\Sub
+     */
+    public function sub( $path, array $params )
 	{
 		return new view\Sub( $path, $params );
 	}
-	
-	public function renderView( $path )
+
+    /**
+     * @param $path
+     * @throws \Exception
+     */
+    public function renderView( $path )
 	{
 		$fullPath = \CV\core\Application::getPath(). 'app/views/'. strtolower( $path ). '.phtml';
-		if ( !\file_exists( $fullPath ) )
-			throw new \Exception( $fullPath );
-		@require $fullPath;
+		if ( !\file_exists( $fullPath ) ) {
+            throw new \Exception( $fullPath );
+        }
+        @require $fullPath; //@todo .... baaaaad...
 	}
-	
-	public function setHeader( $type, $charset = null )
+
+    /**
+     * @param $type
+     * @param null $charset
+     */
+    public function setHeader( $type, $charset = null )
 	{
 		ViewHeader::set( $type, $charset );
 	}
-	
-	public function beginCapture( $buffer )
+
+    /**
+     * @param $buffer
+     */
+    public function beginCapture( $buffer )
 	{
-		if ( !isset( $this->layout->$buffer ) )
-			$this->layout->$buffer = '';
+		if ( !isset( $this->layout->$buffer ) ) {
+            $this->layout->$buffer = '';
+        }
 		ob_start();
 	}
-	
-	public function endCapture( $buffer )
+
+    /**
+     * @param $buffer
+     */
+    public function endCapture( $buffer )
 	{
-		if ( !isset( $this->layout->$buffer ) )
-			$this->layout->$buffer = '';
+		if ( !isset( $this->layout->$buffer ) ) {
+            $this->layout->$buffer = '';
+        }
 		$this->layout->$buffer = ob_get_contents();
 		ob_end_clean();
 	}
-	
-	protected function model( $name )
+
+    /**
+     * @param $name
+     * @return null
+     */
+    protected function model( $name )
 	{
 		return Model::invoke( $name );
 	}
-	
-	public function &layout()
+
+    /**
+     * @return Data_Object
+     */
+    public function &layout()
 	{
 		return $this->layout;
 	}
-	
-	public function json( array $json, $options = null )
+
+    /**
+     * @param array $json
+     * @param null $options
+     * @return string
+     */
+    public function json( array $json, $options = null )
 	{
 		view\Header::set( view\Header::JSON, view\Header::CHARSET_UTF8 );
 		return json_encode( $json, $options );
 	}
 
-	public function set( $view = null, $action = null )
+    /**
+     * @param null $view
+     * @param null $action
+     */
+    public function set( $view = null, $action = null )
 	{
-		if ( !$view )
-			$view = $this->app->getController()->getView() ? $this->app->getController()->getView() : $this->app->controller();
-		if ( !$action )
-			$action = $this->app->getController()->getView() ? $this->app->getController()->getView() : $this->app->action();
+		if ( !$view ) {
+            $view = $this->app->getController()->getView() ? $this->app->getController()->getView() : $this->app->controller();
+        }
+		if ( !$action ) {
+            $action = $this->app->getController()->getView() ? $this->app->getController()->getView() : $this->app->action();
+        }
 		$path = \CV\core\Application::getPath(). 'app/views/'. $view. '/templates/'. $action. '.phtml';
-		if ( \file_exists( $path ) ) 
-			require $path;
+		if ( \file_exists( $path ) ) {
+            require $path;
+        }
 	}
 }
+

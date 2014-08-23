@@ -1,46 +1,73 @@
 <?php
 
 namespace CV\core\model;
-use \CV\core\Data_Object as Obj;
 
+/**
+ * Class Update
+ * @package CV\core\model
+ */
 class Update
 {
-	protected $db;
-	protected $stack;
-	protected $model;
-	
-	function __construct( \CV\core\Model $model )
+    /**
+     * @var \CV\core\DB
+     */
+    protected $db;
+
+    /**
+     * @var array
+     */
+    protected $stack;
+
+    /**
+     * @var \CV\core\Model
+     */
+    protected $model;
+
+    /**
+     * @param \CV\core\Model $model
+     */
+    function __construct( \CV\core\Model $model )
 	{
 		$this->stack = [];
 		$this->db =& $model->db();
 		$this->model =& $model;
 		$this->db->start();
 	}
-	
-	public function __set( $key, $value )
+
+    /**
+     * @param $key
+     * @param $value
+     */
+    public function __set( $key, $value )
 	{
 		if ( !isset( $this->stack[$key] ) )
 			$this->stack[$key] = [];
 		$this->stack[$key][] = $value;
 	}
-	
-	public function save()
+
+    /**
+     *
+     */
+    public function save()
 	{
 		$pkModel = $this->model->name;
         try {
 			$rows = $this->stack[ $pkModel::$primKey ];
 			for ( $i = 0; $i < sizeof( $rows ); $i++ ) {
-				$row = '';
+
+                $row = '';
 				$where = '';
 				$j = 1;
 				foreach ( $this->stack as $column=>$values ) {
-					$val = mysql_real_escape_string( $values[$i] );
-					if ( $column == $pkModel::$primKey )
-						$where = "$column = '{$val}'";
-					else {
+
+                    $val = mysql_real_escape_string( $values[$i] );
+					if ( $column == $pkModel::$primKey ) {
+                        $where = "$column = '{$val}'";
+                    } else {
 						$row .= "$column = '{$val}'";
-						if ( $j < sizeof( $this->stack ) )
-							$row .= ', ';
+						if ( $j < sizeof( $this->stack ) ) {
+                            $row .= ', ';
+                        }
 					}
 					$j++;
 				}
@@ -50,7 +77,7 @@ class Update
 		} catch ( \Exception $e ) {
 			$this->db->rollback();
 			print $this->db->getDb()->error;
-			exit;
+			exit; // @todo - ugly
 		}
 		$this->db->commit();
 	}
