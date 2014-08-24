@@ -49,43 +49,43 @@ class Router
      *
      */
     function __construct()
-	{
-		$this->uri = str_replace( \CV\PATH, '', $_SERVER['REQUEST_URI'] );
-		$this->paramsRaw = explode( '/', $this->uri );
-		$this->params = new Obj;
-		$this->params->{'get'} = new Obj;
+    {
+        $this->uri = str_replace( \CV\PATH, '', $_SERVER['REQUEST_URI'] );
+        $this->paramsRaw = explode( '/', $this->uri );
+        $this->params = new Obj;
+        $this->params->{'get'} = new Obj;
         $this->parseAnnotations();
-		$this->setRoute();
-		for ( $i = $this->paramsIndex; $i < sizeof($this->paramsRaw) && sizeof($this->paramsRaw) > 2; $i++ ) {
-			if ( $i & 1 )
-				$this->params->get->{$this->paramsRaw[$i-1]} = isset($this->paramsRaw[$i]) ? $this->paramsRaw[$i] : null;
-			else
-				$this->params->get->{$this->paramsRaw[$i]} = null;
-		}
-		$this->params->{'sys'} = new Obj;
-		$this->params->sys->{'controller'} = $this->controller;
-		$this->params->sys->{'action'} =  $this->action;
-	}
+        $this->setRoute();
+        for ( $i = $this->paramsIndex; $i < sizeof($this->paramsRaw) && sizeof($this->paramsRaw) > 2; $i++ ) {
+            if ( $i & 1 )
+                $this->params->get->{$this->paramsRaw[$i-1]} = isset($this->paramsRaw[$i]) ? $this->paramsRaw[$i] : null;
+            else
+                $this->params->get->{$this->paramsRaw[$i]} = null;
+        }
+        $this->params->{'sys'} = new Obj;
+        $this->params->sys->{'controller'} = $this->controller;
+        $this->params->sys->{'action'} =  $this->action;
+    }
 
     /**
      *
      */
     protected function defaultRoute()
-	{
-		$this->paramsIndex = 2;
-		$this->controller = isset( $this->paramsRaw[0] ) && $this->paramsRaw[0] != '' ? $this->paramsRaw[0] : \CV\CONTROLLER;
-		$this->action = isset( $this->paramsRaw[1] ) && $this->paramsRaw[1] != '' ? $this->paramsRaw[1] : \CV\ACTION;
-	}
+    {
+        $this->paramsIndex = 2;
+        $this->controller = isset( $this->paramsRaw[0] ) && $this->paramsRaw[0] != '' ? $this->paramsRaw[0] : \CV\CONTROLLER;
+        $this->action = isset( $this->paramsRaw[1] ) && $this->paramsRaw[1] != '' ? $this->paramsRaw[1] : \CV\ACTION;
+    }
 
     /**
      *
      */
     protected function setRoute()
-	{
-		if ( self::$routes ) {
+    {
+        if ( self::$routes ) {
 
             foreach ( self::$routes as $name => $route ) {
-                if ( \preg_match( '/'. str_replace( '/', '\/', $route['search'] ). '/', $this->uri ) ) {
+                if ( \preg_match( '/^'. str_replace( '/', '\/', $route['search'] ). '$/', $this->uri ) ) {
                     $routeRaw = explode( '/', $route['pattern'] );
                     $inx = preg_match( "|{$route['search']}|", $this->uri, $uriValues );
                     $i = 1;
@@ -111,8 +111,8 @@ class Router
                 }
             }
         }
-		$this->defaultRoute();
-	}
+        $this->defaultRoute();
+    }
 
     /**
      * @return array
@@ -127,11 +127,11 @@ class Router
      * @return mixed
      */
     public function get( $property )
-	{
-		if ( isset($this->$property) ) {
+    {
+        if ( isset($this->$property) ) {
             return $this->$property;
         }
-	}
+    }
 
     /**
      * @param $name
@@ -139,14 +139,14 @@ class Router
      * @param array $params
      */
     public static function set( $name, $pattern, array $params )
-	{
-		$search = $pattern;
-		foreach( $params as $key=>$value ) {
-			$search = \str_replace( ':'. $key, $value, $search );
-		}
-		$search = \preg_replace('/:([a-z0-9_-]*)/', '([a-z0-9_-]*)', $search );
-		self::$routes[$name] = [ 'pattern'=>$pattern, 'search'=>$search, 'params'=>$params ];
-	}
+    {
+        $search = $pattern;
+        foreach( $params as $key=>$value ) {
+            $search = \str_replace( ':'. $key, $value, $search );
+        }
+        $search = \preg_replace('/:([a-z0-9_-]*)/', '([a-z0-9_-]*)', $search );
+        self::$routes[$name] = [ 'pattern'=>$pattern, 'search'=>$search, 'params'=>$params ];
+    }
 
     /**
      *
@@ -163,6 +163,7 @@ class Router
                 $fns = basename($reflectionMethod->getFileName());
 
                 preg_match_all("/@([a-zA-Z]+)\(([^)]+)\)/", $annotations, $annotationsAll);
+                if ($annotationsAll[0])
                 $annotationsMap = [];
                 if (!empty($annotationsAll)) {
                    //continue;

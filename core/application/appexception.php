@@ -17,17 +17,17 @@ class AppException extends \Exception
      * @param string $data
      */
     function __construct( $data )
-	{
-		$this->data = $data;
-		parent::__construct();
-	}
+    {
+        $this->data = $data;
+        parent::__construct();
+    }
 
     /**
      * @return string
      */
     public function getData()
-	{
-		return $this->data;
-	}
+    {
+        return $this->data;
+    }
 }
 

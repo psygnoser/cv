@@ -4,7 +4,7 @@ var _PATH = 'http://<?= $_SERVER['SERVER_NAME']. $_SERVER['REQUEST_URI'] ?>';
 var _edit = false;
 var _editFunc = null;
 $(function(){
-	$('.add, #accordion > .remove, #remove-dialog, .bullw').hide();
+    $('.add, #accordion > .remove, #remove-dialog, .bullw').hide();
     editFunc = function(){
     $('#accordion #tabs .ui-state-active div.edit').editable('index/save/type/sections/name/name', { 
             indicator: 'Saving...',
@@ -39,13 +39,13 @@ $(function(){
             <div id="<?= $tab->sections_id ?>" class="edit"><?= $tab->name ?></div>
             <span class="ui-icon ui-icon-close" role="presentation">Remove tab</span>
         </li>
-    	<?php endforeach;  ?>
+        <?php endforeach;  ?>
     </ul>
-	<?php  foreach ( (array) $this->view->sections as $section ):
-		$this->sub( 'sub/accord', [ 
-			'section'=>$section, 
-			'fieldsets'=>$this->view->fieldsets, 
-			'fields'=>$this->view->fields ] );
-	
-	endforeach;  ?>
+    <?php  foreach ( (array) $this->view->sections as $section ):
+        $this->sub( 'sub/accord', [
+            'section'=>$section,
+            'fieldsets'=>$this->view->fieldsets,
+            'fields'=>$this->view->fields ] );
+
+    endforeach;  ?>
 </div>

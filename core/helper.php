@@ -22,10 +22,10 @@ class Helper
      *
      */
     function __construct()
-	{
-		$this->app = \CV\core\Application::getInstance();
-		$this->get =& $this->app->params()->get;
-	}
+    {
+        $this->app = \CV\core\Application::getInstance();
+        $this->get =& $this->app->params()->get;
+    }
 
     /**
      * @param $controller
@@ -33,25 +33,25 @@ class Helper
      * @throws \Exception
      */
     protected function setView( $controller, $action )
-	{
-		$vievName = '\CV\app\views\\'. $controller. '\\'. $controller;
-		if (class_exists($vievName) ) {
+    {
+        $vievName = '\CV\app\views\\'. $controller. '\\'. $controller;
+        if (class_exists($vievName) ) {
             $view = new $vievName;
         } else {
             throw new \Exception("View '$vievName' does not exist");
         }
-		if ( is_callable( [ $view, $action. 'Action' ] ) ) { 
-			$view->{$action. 'Action'}();
-			$view->set( $controller, $action );
-		}
-	}
+        if ( is_callable( [ $view, $action. 'Action' ] ) ) {
+            $view->{$action. 'Action'}();
+            $view->set( $controller, $action );
+        }
+    }
 
     /**
      *
      */
     public function render()
-	{
-		
-	}
+    {
+
+    }
 }
 

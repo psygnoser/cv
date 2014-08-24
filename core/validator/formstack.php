@@ -17,22 +17,22 @@ class FormStack
      * @param array $stack
      */
     function __construct( array $stack )
-	{
-		$this->stack = (object) $stack;
-	}
+    {
+        $this->stack = (object) $stack;
+    }
 
     /**
      * @param $name
      * @return mixed
      */
     function __get( $name )
-	{
-		if ( $name == 'value' ) {
-			$node = $this->stack;
+    {
+        if ( $name == 'value' ) {
+            $node = $this->stack;
 
-			return $node->value;
-		}
+            return $node->value;
+        }
 
-		return $this->stack->$name;
-	}
+        return $this->stack->$name;
+    }
 }

@@ -53,11 +53,11 @@ class Select
      * @param $add
      */
     function __construct( \CV\core\Model $model, $add )
-	{
-		$this->stack = [];
-		$this->db =& $model->db();
-		$this->model =& $model;
-		$this->db->start();
+    {
+        $this->stack = [];
+        $this->db =& $model->db();
+        $this->model =& $model;
+        $this->db->start();
         $this->add = $add;
     }
 

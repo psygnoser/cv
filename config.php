@@ -14,4 +14,4 @@ const CONTROLLER = 'index';
 const ACTION = 'index';
 const PATH = '/cv/';
 
-const VERSION = '0.7.0-rc1';
+const VERSION = '0.8.0-beta0';

@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<base href="http://<?= $_SERVER['SERVER_NAME']. \CV\PATH ?>" />
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>CV</title>
-		<link type="text/css" href="css/printing.css" rel="stylesheet" />	
-		<link href='http://fonts.googleapis.com/css?family=Arizonia' rel='stylesheet' type='text/css'>
-		<?= $this->layout->head ?>
-	<body>
-		<div id="wrapper">
-			<div id="main">
-				<div id="header"><h1><span>CV</span></h1></div>
-				<div id="content">
-					<div>
-					<?= $this->getContent() ?>
-					</div>
-				</div>
-			</div>
-			<div id="copyright">Powered by <strong>psygCV <?= \CV\VERSION ?></strong></div>
-		</div>
-	</body>
+    <head>
+        <base href="http://<?= $_SERVER['SERVER_NAME']. \CV\PATH ?>" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>CV</title>
+        <link type="text/css" href="css/printing.css" rel="stylesheet" />
+        <link href='http://fonts.googleapis.com/css?family=Arizonia' rel='stylesheet' type='text/css'>
+        <?= $this->layout->head ?>
+    <body>
+        <div id="wrapper">
+            <div id="main">
+                <div id="header"><h1><span>CV</span></h1></div>
+                <div id="content">
+                    <div>
+                    <?= $this->getContent() ?>
+                    </div>
+                </div>
+            </div>
+            <div id="copyright">Powered by <strong>psygCV <?= \CV\VERSION ?></strong></div>
+        </div>
+    </body>
 </html>

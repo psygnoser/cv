@@ -8,7 +8,7 @@ namespace CV\core\form;
  */
 class FormInput
 {
-	use tFormInput;
+    use tFormInput;
 
     /**
      * @var

@@ -8,6 +8,6 @@ namespace CV\core;
  */
 class ACL
 {
-	
+
 }
 

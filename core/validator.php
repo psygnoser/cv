@@ -46,21 +46,21 @@ class Validator
      * @param string $method
      */
     function __construct( $method = '_POST' )
-	{
-		$this->stack = (object) null;
-		$this->validators = new validator\Validators($this);
+    {
+        $this->stack = (object) null;
+        $this->validators = new validator\Validators($this);
         $this->method = $method;
-	}
+    }
 
     /**
      * @param $name
      * @param $args
      */
     public function __call( $name, $args )
-	{
-		$defVal = isset( $args[0] ) ? $args[0] : '';
-		$testFunc = isset( $args[1] ) ? $args[1] : '';
-		$errorMsg = isset( $args[2] ) ? $args[2] : ''; 
+    {
+        $defVal = isset( $args[0] ) ? $args[0] : '';
+        $testFunc = isset( $args[1] ) ? $args[1] : '';
+        $errorMsg = isset( $args[2] ) ? $args[2] : '';
         $errorGrp = isset( $args[3] ) ? $args[3] : null;
         $ref = isset( $args[4] ) ? $args[4] : null;
         
@@ -82,40 +82,40 @@ class Validator
         }
         
         $vldNode =& $this->stack->$name;
-		$vldNode[] = new validator\FormStack([ //@todo CHECK THIS CODE !!!
-			'value'     => ( $defVal != $value ? $value : '' ),
-			'defVal'    => $defVal,
-			'testFunc'  => $testFunc,
+        $vldNode[] = new validator\FormStack([ //@todo CHECK THIS CODE !!!
+            'value'     => ( $defVal != $value ? $value : '' ),
+            'defVal'    => $defVal,
+            'testFunc'  => $testFunc,
             'ref'       => $ref,
-			'errorMsg'  => $errorMsg,
+            'errorMsg'  => $errorMsg,
             'errorGrp'  => $errorGrp,
-			'error'     => false
-		]);
-	}
+            'error'     => false
+        ]);
+    }
 
     /**
      * @param $name
      * @return mixed
      */
     public function __get( $name )
-	{
-		return $this->stack->$name;
-	}
+    {
+        return $this->stack->$name;
+    }
 
     /**
      * @return null|object
      */
     public function getStack() 
-	{
-		return $this->stack;
+    {
+        return $this->stack;
     }
 
     /**
      *
      */
     public function singleField() 
-	{
-		$this->single = true;
+    {
+        $this->single = true;
     }
 
     /**
@@ -132,8 +132,8 @@ class Validator
      *
      */
     public function exe()
-	{
-		foreach ( $this->stack as $name => $paramsAll ) {
+    {
+        foreach ( $this->stack as $name => $paramsAll ) {
             foreach ( $paramsAll as $params ) {
 
                 if ( !$params->testFunc ) {
@@ -164,7 +164,7 @@ class Validator
                     $funcParam = $tmp[1];
                 }
 
-                if ( method_exists( $this->validators, $params->testFunc) ) {	
+                if ( method_exists( $this->validators, $params->testFunc) ) {
                     $call = $params->testFunc;
                     if ( $this->validators->$call( $params->value, $funcParam ) ) {
                         $this->updateGrp($params->errorGrp, $name); 
@@ -184,37 +184,37 @@ class Validator
                 if ( !isset( $this->msg[$name] ) ) {
                     $this->msg[$name] = [];
                 }
-                $this->msg[$name][] = [ $params->errorMsg ];	
+                $this->msg[$name][] = [ $params->errorMsg ];
             }
-		}
-	}
+        }
+    }
 
     /**
      *
      */
     public function reset()
-	{
-		foreach ( $this->stack as $stackee ) {
-			$stackee->value = '';
-		}
-	}
+    {
+        foreach ( $this->stack as $stackee ) {
+            $stackee->value = '';
+        }
+    }
 
     /**
      * @return array
      */
     public function getErrors()
-	{
-		return $this->msg;
-	}
+    {
+        return $this->msg;
+    }
 
     /**
      * @param $errorGrp
      * @param $name
      */
     private function updateGrp($errorGrp, $name)
-	{
-		if ( $errorGrp && isset( $this->errorGrps[ $errorGrp ][ $name ] ) ) {
+    {
+        if ( $errorGrp && isset( $this->errorGrps[ $errorGrp ][ $name ] ) ) {
             unset( $this->errorGrps[ $errorGrp ][ $name ] );
         }
-	}
+    }
 }

@@ -1,100 +1,100 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<base href="http://<?= $_SERVER['SERVER_NAME']. \CV\PATH ?>" />
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>CV</title>
-		<link type="text/css" href="css/smoothness/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" />	
-		<link type="text/css" href="css/main.css" rel="stylesheet" />	
-		<link href='http://fonts.googleapis.com/css?family=Arizonia' rel='stylesheet' type='text/css'>
+    <head>
+        <base href="http://<?= $_SERVER['SERVER_NAME']. \CV\PATH ?>" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>CV</title>
+        <link type="text/css" href="css/smoothness/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" />
+        <link type="text/css" href="css/main.css" rel="stylesheet" />
+        <link href='http://fonts.googleapis.com/css?family=Arizonia' rel='stylesheet' type='text/css'>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
-		<script type="text/javascript" src="js/jquery.jeditable.js"></script>
-		<script type="text/javascript" src="js/asvalidation.js"></script>
-		<script type="text/javascript">
-			$(function() {
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="js/jquery.jeditable.js"></script>
+        <script type="text/javascript" src="js/asvalidation.js"></script>
+        <script type="text/javascript">
+            $(function() {
                 $('input,button').addClass('ui-corner-all ui-state-default');
                 
-				var v = new AS_Validation( 'form#login', '<?= \CV\PATH ?>login', 'set', 'validate/type/form', null, [ AS_PreInit_InlineLabel, AS_PreInit_PassCamouflage ] );
-				v.setAlerter( AS_Alerter_Login );
-				
-				function AS_PreInit_PassCamouflage( t )
-				{
-					var selector = t.f+ " input#pasw";
-					var divSelector = t.f+ " div#pasw";
-					$(divSelector).append( '<div id="fakeVal">'+ $(selector).attr('ref') + '</div>' );
-					$('#fakeVal').click(function(e) {
-						$(selector).focus();
-					});
-					$(selector).on( 'focus', function(e) {
-						if ( this.value == '' )
-							$(t.f + ' div#fakeVal').hide();
+                var v = new AS_Validation( 'form#login', '<?= \CV\PATH ?>login', 'set', 'validate/type/form', null, [ AS_PreInit_InlineLabel, AS_PreInit_PassCamouflage ] );
+                v.setAlerter( AS_Alerter_Login );
 
-					});
-					$(selector).on( 'blur', function(e) {
-						if ( this.value == '' )
-							$(t.f + ' div#fakeVal').show();
-					});
-				}
-				
-				function AS_Alerter_Login( form )
-				{
-					this.f = form;
-					$(document).click( function(e) {
-						if ( e.target.tagName != 'INPUT' )
-							$('#login-error').hide();
-					});
-					this.pre = function( t )
-					{
-						$('#login-error').hide();
-					}
-					this.each = function( f, id ){}
-					this.validate = function( errors )
-					{
-						var o = '';
-						for ( id in errors ) {
-							o += '<ul id="errors-' + id + '" class="errors">';			
-							for ( errorKey in errors[id] ) {
-								o += '<li>' + errors[id][errorKey] + '</li>';
-							}
-							o += '</ul>';
-						}
-						$('#login-error')
-							.html( o )
-							.show();
-					}
-					this.post = function(){}
-				}
-			});
-		</script>
-		<?= $this->layout->head ?>
-	<body>
-		<div id="top">
-			<div><div><a href="./">Home</a> |
-					<?php if ( $this->getHelper('login')->isLogged() ): ?>
-					
-					<a href="./edit">Edit</a> <!--|
-					<a href="./printing">Print</a-->
-					<?php else: ?>
+                function AS_PreInit_PassCamouflage( t )
+                {
+                    var selector = t.f+ " input#pasw";
+                    var divSelector = t.f+ " div#pasw";
+                    $(divSelector).append( '<div id="fakeVal">'+ $(selector).attr('ref') + '</div>' );
+                    $('#fakeVal').click(function(e) {
+                        $(selector).focus();
+                    });
+                    $(selector).on( 'focus', function(e) {
+                        if ( this.value == '' )
+                            $(t.f + ' div#fakeVal').hide();
+
+                    });
+                    $(selector).on( 'blur', function(e) {
+                        if ( this.value == '' )
+                            $(t.f + ' div#fakeVal').show();
+                    });
+                }
+
+                function AS_Alerter_Login( form )
+                {
+                    this.f = form;
+                    $(document).click( function(e) {
+                        if ( e.target.tagName != 'INPUT' )
+                            $('#login-error').hide();
+                    });
+                    this.pre = function( t )
+                    {
+                        $('#login-error').hide();
+                    }
+                    this.each = function( f, id ){}
+                    this.validate = function( errors )
+                    {
+                        var o = '';
+                        for ( id in errors ) {
+                            o += '<ul id="errors-' + id + '" class="errors">';
+                            for ( errorKey in errors[id] ) {
+                                o += '<li>' + errors[id][errorKey] + '</li>';
+                            }
+                            o += '</ul>';
+                        }
+                        $('#login-error')
+                            .html( o )
+                            .show();
+                    }
+                    this.post = function(){}
+                }
+            });
+        </script>
+        <?= $this->layout->head ?>
+    <body>
+        <div id="top">
+            <div><div><a href="./">Home</a> |
+                    <?php if ( $this->getHelper('login')->isLogged() ): ?>
+
+                    <a href="./edit">Edit</a> <!--|
+                    <a href="./printing">Print</a-->
+                    <?php else: ?>
                     <a href="./register">Register</a>
-					<?php endif; ?>
+                    <?php endif; ?>
                         <?= $this->getHelper('login')->publicLink() ?>
-					<div style="float:right;padding:0 0 10px 0;"><?= $this->getHelper('login')->render() ?></div>
-			</div></div>
-		</div>
-		<div id="wrapper">
-			<div id="main">
-				<div id="header"><h1><span>CV</span></h1></div>
-				<div id="content">
+                    <div style="float:right;padding:0 0 10px 0;"><?= $this->getHelper('login')->render() ?></div>
+            </div></div>
+        </div>
+        <div id="wrapper">
+            <div id="main">
+                <div id="header"><h1><span>CV</span></h1></div>
+                <div id="content">
                     <div class="controls accord">
                         <a title="Add a new tab!" class="add" href="#"></a>
                     </div>
-					<div id="sections">
-					<?= $this->getContent() ?>
-					</div>
-				</div>
-			</div>
-			<div id="copyright">Powered by <strong>CV <?= \CV\VERSION ?></strong><br /><br />Copyright &copy; <?= date('Y') ?> Tilen Leban. All rights reserved.</div>
-		</div>
-	</body>
+                    <div id="sections">
+                    <?= $this->getContent() ?>
+                    </div>
+                </div>
+            </div>
+            <div id="copyright">Powered by <strong>CV <?= \CV\VERSION ?></strong><br /><br />Copyright &copy; <?= date('Y') ?> Tilen Leban. All rights reserved.</div>
+        </div>
+    </body>
 </html>

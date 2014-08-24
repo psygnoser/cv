@@ -8,18 +8,18 @@ namespace CV\core;
  */
 class Auth
 {
-	const WEAK = 32;
-	const NORMAL = 256;
-	const STRONG = 16384;
-	const EXTREME = 65000;
+    const WEAK = 32;
+    const NORMAL = 256;
+    const STRONG = 16384;
+    const EXTREME = 65000;
 
     /**
      * @param AuthInterface $auth
      */
     public function authenticate( AuthInterface $auth )
-	{
-		
-	}
+    {
+
+    }
 
     /**
      * @param $input
@@ -27,17 +27,17 @@ class Auth
      * @return string
      */
     public static function getHash( $input, $strength = self::NORMAL )
-	{
-		for ( $i = 0; $i < $strength; $i++ ) {
+    {
+        for ( $i = 0; $i < $strength; $i++ ) {
             $input = sha1($input);
         }
 
-		return $input;
-	}
+        return $input;
+    }
 }
 
 interface AuthInterface
 {
-	public function authenticate( $username );
+    public function authenticate( $username );
 }
 

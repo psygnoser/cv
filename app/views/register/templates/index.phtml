@@ -15,7 +15,7 @@
             {
                 var o = '';
                 for ( id in errors ) {
-                    o += '<ul id="errors-' + id + '" class="errors">';			
+                    o += '<ul id="errors-' + id + '" class="errors">';
                     for ( errorKey in errors[id] ) {
                         o += '<li>' + errors[id][errorKey] + '</li>';
                     }
@@ -41,11 +41,11 @@
         <div id="reg-error"></div>
     <div><form id="register">
         <?php foreach ( $this->view->form as $field ): 
-					$this->sub( 'sub/form', [ 'field'=>$field ] );
+                    $this->sub( 'sub/form', [ 'field'=>$field ] );
         endforeach; ?></form>
     </div>
 </fieldset>
                 </div>
-	</div>
+    </div>
 
 </div>

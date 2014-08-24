@@ -4,9 +4,9 @@ namespace CV\app\controllers;
 
 class Users extends \CV\core\Controller
 {
-	public function indexAction()
-	{
-	}
+    public function indexAction()
+    {
+    }
 }
 
 ?>

@@ -20,18 +20,18 @@ class DB
      * @param $name
      */
     function __construct( $host, $user, $pasw, $name )
-	{
-		$this->db = new \mysqli( $host, $user, $pasw, $name );
-		$this->db->set_charset('utf8');
-	}
+    {
+        $this->db = new \mysqli( $host, $user, $pasw, $name );
+        $this->db->set_charset('utf8');
+    }
 
     /**
      * @return \mysqli
      */
     public function getDb()
-	{
-		return $this->db;
-	}
+    {
+        return $this->db;
+    }
 
     /**
      * @param $query
@@ -39,13 +39,13 @@ class DB
      * @return mixed
      */
     protected function bind( $query, array $params )
-	{
-		foreach ( $params as $key=>$value ) {
-			$query = str_replace( ':'. $key, $this->db->real_escape_string($value), $query );
-		}
+    {
+        foreach ( $params as $key=>$value ) {
+            $query = str_replace( ':'. $key, $this->db->real_escape_string($value), $query );
+        }
 
-		return $query;
-	}
+        return $query;
+    }
 
     /**
      * @param $query
@@ -54,13 +54,13 @@ class DB
      * @throws \Exception
      */
     public function query( $query, $params = null )
-	{
-		$result = $this->db->query( $params ? $this->bind( $query, $params ) : $query );
-		if ( !$result )
-			throw new \Exception( $this->db->errno.', '.$this->db->error );
+    {
+        $result = $this->db->query( $params ? $this->bind( $query, $params ) : $query );
+        if ( !$result )
+            throw new \Exception( $this->db->errno.', '.$this->db->error );
 
-		return $result;
-	}
+        return $result;
+    }
 
     /**
      * @param $query
@@ -68,40 +68,40 @@ class DB
      * @return array
      */
     public function fetch( $query, $params = null )
-	{
-		$result = $this->query( $query, $params );
-		$row = [];
-		$assoc = [];
-		while ( $row = $result->fetch_assoc() ) {
-			$assoc[] = (object) $row;
-		}
+    {
+        $result = $this->query( $query, $params );
+        $row = [];
+        $assoc = [];
+        while ( $row = $result->fetch_assoc() ) {
+            $assoc[] = (object) $row;
+        }
 
-		return $assoc;
-	}
+        return $assoc;
+    }
 
     /**
      *
      */
     public function start()
-	{
-		$this->db->autocommit(false);
-	}
+    {
+        $this->db->autocommit(false);
+    }
 
     /**
      *
      */
     public function commit()
-	{
-		$this->db->commit();
-		$this->db->autocommit(true);
-	}
+    {
+        $this->db->commit();
+        $this->db->autocommit(true);
+    }
 
     /**
      *
      */
     public function rollback()
-	{
-		$this->db->rollback();
-		$this->db->autocommit(true);
-	}
+    {
+        $this->db->rollback();
+        $this->db->autocommit(true);
+    }
 }

@@ -88,7 +88,7 @@ class Form
         if ( $vldClass && class_exists($vldClass) ) {
             $validator->setValidators($vldClass);
         }
-		foreach ($this->inputs[$this->name] as $input) {
+        foreach ($this->inputs[$this->name] as $input) {
 
             $field = $input->name;
             if ( $input->validate ) {
@@ -97,11 +97,11 @@ class Form
                 }
             }
         }
-		$validator->exe();
+        $validator->exe();
         $errors = $validator->getErrors();
         $response = empty( $errors ) ? 
-			[ 'error'=>0 ] :
-			[ 'message'=>(object)$errors ];
+            [ 'error'=>0 ] :
+            [ 'message'=>(object)$errors ];
         
         return $response;
     }

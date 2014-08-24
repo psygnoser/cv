@@ -32,9 +32,9 @@ class Validators
      * @return bool
      */
     public function sameAs( $value, $param )
-	{
+    {
         $bff = $this->validator->getStack()->$param;
-		if ( $value && $bff[0]->value && $value == $bff[0]->value ) {
+        if ( $value && $bff[0]->value && $value == $bff[0]->value ) {
 
             return true;
         }
@@ -48,15 +48,15 @@ class Validators
      * @return bool
      */
     public function inRange( $value, $param )
-	{
+    {
         $bff = explode('-', $param);
-		if ( $value && isset($bff[0]) && isset($bff[1]) && $value >= $bff[0] && $value <= $bff[1] ) {
+        if ( $value && isset($bff[0]) && isset($bff[1]) && $value >= $bff[0] && $value <= $bff[1] ) {
 
             return true;
         }
 
         return false;
-	}
+    }
 
     /**
      * @param $value
@@ -64,13 +64,13 @@ class Validators
      * @return bool
      */
     public function lenghtRange( $value, $param )
-	{
+    {
         $bff = explode('-', $param);
-		if ( $value && isset($bff[0]) && isset($bff[1]) && strlen($value) >= $bff[0] && strlen($value) <= $bff[1] ) {
+        if ( $value && isset($bff[0]) && isset($bff[1]) && strlen($value) >= $bff[0] && strlen($value) <= $bff[1] ) {
 
             return true;
         }
 
-		return false;
-	}
+        return false;
+    }
 }

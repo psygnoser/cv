@@ -8,5 +8,5 @@ namespace CV\core;
  */
 abstract class Utils
 {
-	
+
 }

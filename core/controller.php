@@ -78,24 +78,24 @@ class Controller
      *
      */
     function __construct()
-	{
-		$this->app = \CV\core\Application::getInstance();
-		$this->get =& $this->app->params()->get;
-		
-		$this->controller = $this->app->controller();
-		$this->action = $this->app->action(); 
-	}
+    {
+        $this->app = \CV\core\Application::getInstance();
+        $this->get =& $this->app->params()->get;
+
+        $this->controller = $this->app->controller();
+        $this->action = $this->app->action();
+    }
 
     /**
      * @throws \Exception
      */
     protected function _setView()
-	{
-		$this->controller = $this->viewOverride ? $this->viewOverride : $this->app->controller();
-		$this->action = $this->app->action(); 
-		$vievName = '\CV\app\views\\'. $this->controller. '\\'. $this->controller;
+    {
+        $this->controller = $this->viewOverride ? $this->viewOverride : $this->app->controller();
+        $this->action = $this->app->action();
+        $vievName = '\CV\app\views\\'. $this->controller. '\\'. $this->controller;
 
-		if (class_exists($vievName) ) {
+        if (class_exists($vievName) ) {
             $view = new $vievName;
         } else {
             throw new \Exception(__FILE__. ", ". __LINE__. ": View '$vievName' does not exist");
@@ -105,103 +105,103 @@ class Controller
             $this->_views[ $this->controller ] = $view;
         }
 
-		if ( is_callable( [ $view, $this->action. 'Action' ] ) ) {
-			$view->{$this->action. 'Action'}();
-			$view->set();
-			$this->layout =& $view->layout();
-		}
+        if ( is_callable( [ $view, $this->action. 'Action' ] ) ) {
+            $view->{$this->action. 'Action'}();
+            $view->set();
+            $this->layout =& $view->layout();
+        }
 
-		$this->built = true;
-	}
+        $this->built = true;
+    }
 
     /**
      * @param $action
      */
     public function setAction( $action )
-	{
-		$this->actionOverride = $action;
-		$this->app->params()->sys->action = $action;
-	}
+    {
+        $this->actionOverride = $action;
+        $this->app->params()->sys->action = $action;
+    }
 
     /**
      * @param $controller
      */
     public function setView( $controller )
-	{
-		$this->viewOverride = $controller;
-		if ( $this->built )
-			$this->_setView();
-	}
+    {
+        $this->viewOverride = $controller;
+        if ( $this->built )
+            $this->_setView();
+    }
 
     /**
      * @return mixed
      */
     public function getView()
-	{
-		return $this->viewOverride;
-	}
+    {
+        return $this->viewOverride;
+    }
 
     /**
      * @return mixed
      */
     public function getActionView()
-	{
-		return $this->actionOverride;
-	}
+    {
+        return $this->actionOverride;
+    }
 
     /**
      *
      */
     protected function disableView()
-	{
-		$this->diabledView = true;
-	}
+    {
+        $this->diabledView = true;
+    }
 
     /**
      * @param $override
      */
     public function setLayout( $override )
-	{
-		$this->app->setLayout( $override );
-	}
+    {
+        $this->app->setLayout( $override );
+    }
 
     /**
      *
      */
     protected function disableLayout()
-	{
-		$this->diabledLayout = true;
-	}
+    {
+        $this->diabledLayout = true;
+    }
 
     /**
      * @param $name
      * @return null
      */
     protected function model( $name )
-	{
-		return Model::invoke( $name );
-	}
+    {
+        return Model::invoke( $name );
+    }
 
     /**
      * @return mixed
      */
     protected function view()
-	{
-		$controller = $this->viewOverride ? $this->viewOverride : $this->app->params()->sys->controller;
-		if ( !isset( $this->_views[ $controller ] ) ) {
+    {
+        $controller = $this->viewOverride ? $this->viewOverride : $this->app->params()->sys->controller;
+        if ( !isset( $this->_views[ $controller ] ) ) {
             $this->_views[ $controller ] = new \CV\core\View;
         }
 
-		return $this->_views[ $controller ];
-	}
+        return $this->_views[ $controller ];
+    }
 
     /**
      * @param $redirect
      */
     protected function redirect( $redirect )
-	{
-		return header('Location: '. \CV\PATH. $redirect );
-	}
+    {
+        return header('Location: '. \CV\PATH. $redirect );
+    }
 
     /**
      * @param $controller
@@ -209,12 +209,12 @@ class Controller
      * @throws application\AppException
      */
     protected function navigate( $controller, $action )
-	{
-		$data = new Obj;
-		$data->controller = $controller;
-		$data->action = $action;
-		throw new application\AppException( $data );
-	}
+    {
+        $data = new Obj;
+        $data->controller = $controller;
+        $data->action = $action;
+        throw new application\AppException( $data );
+    }
 
     /**
      *
@@ -224,44 +224,44 @@ class Controller
     /**
      *
      */
-	public function postDispatch(){}
+    public function postDispatch(){}
 
     /**
      *
      */
-	public function preRender(){}
+    public function preRender(){}
 
     /**
      *
      */
-	public function postRender(){}
+    public function postRender(){}
 
     /**
      * @return bool
      */
     public function isDisabledLayout()
-	{
-		return $this->diabledLayout;
-	}
+    {
+        return $this->diabledLayout;
+    }
 
     /**
      * @return mixed
      */
     public function &getLayoutParams()
-	{
-		return $this->layout;
-	}
+    {
+        return $this->layout;
+    }
 
     /**
      *
      */
     public function render()
-	{
-		if ( !$this->diabledView ) {
-			$this->preRender();
-			$this->_setView();
-			$this->postRender();
-		}
-	}
+    {
+        if ( !$this->diabledView ) {
+            $this->preRender();
+            $this->_setView();
+            $this->postRender();
+        }
+    }
 }
 
