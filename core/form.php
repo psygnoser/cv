@@ -25,15 +25,13 @@ class Form
     public function render($asString = false) 
     {
         $return = '';
-        //$this->inputs['formBegin'] = '';
         foreach ($this->inputs[$this->name] as $input) {
             $ref = '';
-            foreach ($input->validate as $vld) {
+            foreach ($input->validate as $vld)
                 if ( $vld[3] ) {
                     $ref = $vld[3];
                     break;
                 }
-            }
             $this->render[$input->name] = (object) null;
             $return =& $this->render[$input->name]->field;
             $return .= '<'. $input->tag. ' id="'. $input->id. '" name="'. $input->name. '" ref="'. $ref. '" ';

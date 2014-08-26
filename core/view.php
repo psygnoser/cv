@@ -2,6 +2,9 @@
 
 namespace CV\core;
 use CV\core\Data_Object as Obj;
+use CV\core\Application;
+use CV\core\view\Header;
+use CV\core\view\Node;
 
 class View
 {
@@ -12,8 +15,8 @@ class View
 	
 	function __construct()
 	{
-		$this->app = \CV\core\Application::getInstance();
-		$this->view = new Obj;
+		$this->app = Application::getInstance();
+		$this->view = new Node;
 		$this->layout = new Obj;
 		$this->get =& $this->app->params()->get;
 	}
@@ -25,7 +28,7 @@ class View
 	
 	public function renderView( $path )
 	{
-		$fullPath = \CV\core\Application::getPath(). 'app/views/'. strtolower( $path ). '.phtml';
+		$fullPath = Application::getPath(). 'app/views/'. strtolower( $path ). '.phtml';
 		if ( !\file_exists( $fullPath ) )
 			throw new \Exception( $fullPath );
 		@require $fullPath;
@@ -63,7 +66,7 @@ class View
 	
 	public function json( array $json, $options = null )
 	{
-		view\Header::set( view\Header::JSON, view\Header::CHARSET_UTF8 );
+		view\Header::set( Header::JSON, Header::CHARSET_UTF8 );
 		return json_encode( $json, $options );
 	}
 
@@ -73,7 +76,7 @@ class View
 			$view = $this->app->getController()->getView() ? $this->app->getController()->getView() : $this->app->controller();
 		if ( !$action )
 			$action = $this->app->getController()->getView() ? $this->app->getController()->getView() : $this->app->action();
-		$path = \CV\core\Application::getPath(). 'app/views/'. $view. '/templates/'. $action. '.phtml';
+		$path = Application::getPath(). 'app/views/'. $view. '/templates/'. $action. '.phtml';
 		if ( \file_exists( $path ) ) 
 			require $path;
 	}

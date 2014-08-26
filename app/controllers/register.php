@@ -2,6 +2,8 @@
 
 namespace CV\app\controllers;
 
+use CV\app\views\register\forms\Register as RegisterForm;
+
 class Register extends \CV\core\Controller
 {
 	public function indexAction() 
@@ -10,7 +12,7 @@ class Register extends \CV\core\Controller
     
     public function validateAction() 
 	{
-        $form = new \CV\app\views\register\forms\Register();
+        $form = new RegisterForm();
         $response = $form->validate( '\CV\app\classes\Validators' );
         print $this->view()->json( $response );
 
@@ -20,7 +22,7 @@ class Register extends \CV\core\Controller
     
     public function fieldAction() 
 	{
-        $form = new \CV\app\views\register\forms\Register(); 
+        $form = new RegisterForm(); 
         $response = $form->validate( '\CV\app\classes\Validators', true );
         print $this->view()->json( $response );
 

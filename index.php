@@ -2,14 +2,17 @@
 
 namespace CV;
 
+use CV\core\Application;
+use CV\core\Router;
+
 require_once 'config.php';
 require_once 'core/application.php';
 
-class MyApplication extends core\Application
+class MyApplication extends Application
 {
 	protected function _routers()
 	{
-        core\Router::set( 'public', 'public/:id', [ 'controller'=>'show', 'action'=>'show' ] );
+        Router::set( 'public', 'public/:id', [ 'controller'=>'show', 'action'=>'show' ] );
 	}
 	
 	protected function _session()

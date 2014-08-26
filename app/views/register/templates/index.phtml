@@ -4,13 +4,10 @@
         var vr = new AS_Validation( 'form#register', '<?= \CV\PATH ?>register', 'set', 'validate', 'field', [] );
         vr.setAlerter( AS_Alerter_Label, {output:'append'} );
         vr.setAlerterSingle( AS_Alerter_LabelSingle, {output:'append'} );
-        //alert('fsdf');
         function AS_Alerter_Reg( form )
         {
             this.pre = function( t ){}
-
             this.each = function( f, id ){}
-
             this.validate = function( errors )
             {
                 var o = '';
@@ -25,7 +22,6 @@
                     .html( o )
                     .show();
             }
-
             this.post = function(){}
         }
     });

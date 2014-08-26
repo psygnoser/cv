@@ -2,6 +2,8 @@
 
 namespace CV\core;
 
+use CV\core\validator\Validators;
+
 class Validator
 {
 	private $stack = null;
@@ -18,7 +20,7 @@ class Validator
 	function __construct( $method = '_POST' )
 	{
 		$this->stack = (object) null;
-		$this->validators = new validator\Validators($this);
+		$this->validators = new Validators($this);
         $this->method = $method;
 	}
 	
@@ -72,12 +74,12 @@ class Validator
     public function setValidators( $validators )
     {
         $vldObj = new $validators($this);
-        if ( $vldObj instanceof \CV\core\validator\Validators  ) { 
+        if ( $vldObj instanceof Validators  ) { 
             $this->validators = $vldObj;}
     }
     
     public function exe()
-	{              // print_r($this->stack);
+	{
 		foreach ( $this->stack as $name => $paramsAll ) {
             foreach ( $paramsAll as $params ) {
                 if ( !$params->testFunc )
@@ -115,7 +117,7 @@ class Validator
                     $this->msg[$name] = [];    
                 $this->msg[$name][] = [ $params->errorMsg ];	
             }
-		}//print_r($this->errorGrps);print_r($this->msg);exit;
+		}
 	}
 	
 	public function reset()
