@@ -1,10 +1,10 @@
 <?php
 
-namespace CV\core\view;
+namespace CV\core\View;
 
 /**
  * Class Header
- * @package CV\core\view
+ * @package CV\core\View
  */
 abstract class Header
 {

@@ -1,7 +1,6 @@
 <?php
 
-namespace CV\core\view;
-use CV\core\Data_Object as Obj;
+namespace CV\core\View;
 
 class Sub
 {

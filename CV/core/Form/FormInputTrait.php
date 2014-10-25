@@ -1,12 +1,12 @@
 <?php
 
-namespace CV\core\form;
+namespace CV\core\Form;
 
 /**
- * Trait tFormInput
- * @package CV\core\form
+ * Trait FormInputTrait
+ * @package CV\core\Form
  */
-trait tFormInput
+trait FormInputTrait
 {
     /**
      * @var

@@ -2,7 +2,7 @@
 
 namespace CV\core;
 
-require_once 'loader.php';
+//require_once 'loader.php';
 
 /**
  * Class Application

@@ -1,10 +1,10 @@
 <?php
 
-namespace CV\core\validator;
+namespace CV\core\Validator;
 
 /**
  * Class FormStack
- * @package CV\core\validator
+ * @package CV\core\Validator
  */
 class FormStack
 {

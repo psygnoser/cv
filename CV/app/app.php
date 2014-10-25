@@ -1,15 +1,17 @@
 <?php
 
+namespace CV\app;
+
+require_once 'config/config.php';
+require_once '../CV/core/loader.php';
+
 use CV\core\Application;
 use CV\core\Router;
 
-require_once 'config.php';
-require_once 'core/application.php';
-
 /**
- * Class MyApplication
+ * Class App
  */
-class MyApplication extends Application
+class App extends Application
 {
     protected function _routers()
     {
@@ -46,7 +48,3 @@ class MyApplication extends Application
         }
     }
 }
-
-$cv = new MyApplication;
-print $cv->render();
-

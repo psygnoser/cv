@@ -15,8 +15,10 @@ abstract class Loader
      */
     public final static function load( $class )
     {
+       // var_dump($class);
         $class = preg_replace('|^'. __NAMESPACE__.'\\\|', '', $class );
-        $path = '../.'. '/'. str_replace('\\', '/', strtolower( $class ) ). '.php';
+        $path = '../.'. '/'. str_replace('\\', '/', ( $class ) ). '.php';
+        //var_dump($class, $path);
         if ( file_exists($path) ) {
 
             require_once $path;

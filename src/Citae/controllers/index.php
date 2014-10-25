@@ -22,6 +22,7 @@ class Index extends \CV\core\Controller
     {
         //print "SDFSDFSDFSDFSDFSDFFSDF";
         //var_dump($this->app->params(), Router::getRoutes());
+
     }
 
     public function positionAction()

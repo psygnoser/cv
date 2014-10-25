@@ -1,6 +1,6 @@
 <?php
 
-namespace CV\core\application;
+namespace CV\core\Application;
 
 /**
  * Class AppException

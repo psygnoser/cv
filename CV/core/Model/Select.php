@@ -1,10 +1,10 @@
 <?php
 
-namespace CV\core\model;
+namespace CV\core\Model;
 
 /**
  * Class Select
- * @package CV\core\model
+ * @package CV\core\Model
  */
 class Select
 {

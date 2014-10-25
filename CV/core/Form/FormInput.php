@@ -1,14 +1,14 @@
 <?php
 
-namespace CV\core\form;
+namespace CV\core\Form;
 
 /**
  * Class FormInput
- * @package CV\core\form
+ * @package CV\core\Form
  */
 class FormInput
 {
-    use tFormInput;
+    use FormInputTrait;
 
     /**
      * @var

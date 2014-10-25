@@ -1,10 +1,10 @@
 <?php
 
-namespace CV\core\model;
+namespace CV\core\Model;
 
 /**
  * Class Insert
- * @package CV\core\model
+ * @package CV\core\Model
  */
 class Insert
 {
